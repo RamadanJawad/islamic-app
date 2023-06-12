@@ -11,10 +11,10 @@ class LocalNotificationService {
   Future<void> initialize() async {
     _configureLocalTimeZone();
     const AndroidInitializationSettings androidInitializationSettings =
-        AndroidInitializationSettings("drawable/adhan");
+        AndroidInitializationSettings("drawable/logo");
 
-    final InitializationSettings settings =
-        InitializationSettings(android: androidInitializationSettings);
+    InitializationSettings settings =
+        const InitializationSettings(android: androidInitializationSettings);
 
     await _localNotificationService.initialize(settings,
         onDidReceiveNotificationResponse: onDidReceiveNotificationResponse);
@@ -84,8 +84,8 @@ class LocalNotificationService {
       _convertTime(hour, minutes),
       const NotificationDetails(
         android: AndroidNotificationDetails(
-          'PrayTimeId_3',
-          'Prayer Times',
+          'PrayTimeId_5',
+          'PrayerTimes_5',
           playSound: true,
           sound: RawResourceAndroidNotificationSound("sound"),
           channelDescription: 'Setting Pryer Time',
@@ -109,11 +109,11 @@ class LocalNotificationService {
       id,
       title,
       body,
-      RepeatInterval.everyMinute,
+      RepeatInterval.hourly,
       const NotificationDetails(
         android: AndroidNotificationDetails(
-          'otherId',
-          'otherChannel',
+          'otherId_5',
+          'otherChannel_5',
           channelDescription: 'Setting Notification',
           styleInformation: BigTextStyleInformation(''),
           importance: Importance.max,
@@ -140,13 +140,13 @@ class LocalNotificationService {
     );
 
     if (scheduledDate.isBefore(now)) {
-      scheduledDate.add(Duration(days: 1));
+      scheduledDate.add(const Duration(days: 1));
     }
 
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-      'your channel id',
-      'your channel name',
+      'fridayChannelId_5',
+      'fridayChannelName_5',
       importance: Importance.max,
       priority: Priority.high,
     );

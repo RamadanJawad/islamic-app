@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
-import 'package:islamic_app/controller/home_controller.dart';
 import 'package:islamic_app/core/shared/shared_perf.dart';
+import 'package:islamic_app/features/pray_time/controller/prayTime_controller.dart';
 
-saveData(HomeController controller) {
+saveData(PrayTimeController controller) {
   SharedPrefController().fajr(
       hour: controller.prayerTimes.fajr.hour,
       minute: controller.prayerTimes.fajr.minute,

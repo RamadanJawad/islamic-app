@@ -1,5 +1,4 @@
 import 'package:shared_preferences/shared_preferences.dart';
-
 class SharedPrefController {
   SharedPrefController._();
 
@@ -14,18 +13,22 @@ class SharedPrefController {
     _sharedPreferences = await SharedPreferences.getInstance();
   }
 
-  Future<void> isLogin({required bool isLogin}) async {
-    await _sharedPreferences.setBool("isLogin", isLogin);
-  }
-
-  bool? get boarding {
-    return _sharedPreferences.getBool("isLogin") ?? false;
-  }
-
   Future<void> saveCoordinate(
       {required double long, required double lat}) async {
     await _sharedPreferences.setDouble("long", long);
     await _sharedPreferences.setDouble("lat", lat);
+  }
+  Future<void> saveAnswersForLevel(int level, List<String> answers) async {
+    await _sharedPreferences.setStringList('level_$level', answers);
+  }
+  Future<void> saveAllStarsPoint(int stars) async {
+    await _sharedPreferences.setInt('stars', stars);
+  }
+  Future<List<String>> getAnswersForLevel(int level) async {
+    return _sharedPreferences.getStringList('level_$level') ?? [];
+  }
+  int? get getAllStarsPoint{
+    return _sharedPreferences.getInt("stars") ?? 3;
   }
 
   Future<void> saveStatus1({required bool status1}) async {
@@ -84,7 +87,6 @@ class SharedPrefController {
     return _sharedPreferences.getInt("status6");
   }
 
-  //////////////////////////////////////////////////////////////////////////////
   Future<void> fajr(
       {required int hour,
       required int minute,
@@ -134,28 +136,12 @@ class SharedPrefController {
     await _sharedPreferences.setString("isha", prayTime);
   }
 
-  Future<void> saveQuran({required String name}) async {
-    await _sharedPreferences.setString("name", name);
-  }
-
   Future<void> savePage({required int index}) async {
     await _sharedPreferences.setInt("index", index);
   }
 
-  Future<void> saveSurah({required int index}) async {
-    await _sharedPreferences.setInt("number", index);
-  }
-
-  int? get currentSurah {
-    return _sharedPreferences.getInt("number");
-  }
-
   int? get currentPage {
     return _sharedPreferences.getInt("index");
-  }
-
-  String? get nameQuran {
-    return _sharedPreferences.getString("name");
   }
 
   int? get fajrHour {
@@ -220,5 +206,8 @@ class SharedPrefController {
 
   String? get prayShrouq {
     return _sharedPreferences.getString("shrouq");
+  }
+  clearQuestion()async{
+    await _sharedPreferences.remove("stars");
   }
 }

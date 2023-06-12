@@ -7,7 +7,7 @@ class ImageUrl {
   static const String hadeas = "assets/images/book.png";
   static const String qibla = "assets/images/qibla2.png";
   static const String pray_time = "assets/images/adzan.png";
-  static const String basmalah = "assets/svg/bismillah.svg";
+  static const String settings = "assets/images/settings.png";
   static const String icon = "assets/images/arabic.png";
   static const String decoration = "assets/images/decoration.png";
   static const String logo = "assets/images/logo.png";
@@ -24,5 +24,19 @@ class ImageUrl {
   static const String notification2 = "assets/images/daytime.png";
   static const String notification3 = "assets/images/nighttime.png";
   static const String notification4 = "assets/images/muslim.png";
-  static const String notification5 ="assets/images/dua_hands.png";
+  static const String notification5 = "assets/images/dua_hands.png";
+  static const String masari = "assets/images/masari.jpg";
+  static const String abdalbaset = "assets/images/abdalbaset.jpg";
+  static const String badge = "assets/images/badge.png";
+  static const String questions = "assets/images/questions.png";
+  static const String smiling = "assets/images/smiling.png";
+  static const String sad = "assets/images/sad.png";
+  static const String answers = "assets/images/answers.png";
+  static const String share = "assets/images/share1.png";
+  static const String brain = "assets/images/brain.png";
+  static const String dollar="assets/images/dollar.png";
+  static const String questionImage="assets/images/background_question.png";
+  static const String timer = "assets/images/timer.png";
+  static const String choice="assets/images/choice.png";
+  static const String polling="assets/images/polling.png";
 }

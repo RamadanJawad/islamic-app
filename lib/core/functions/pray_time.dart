@@ -1,26 +1,17 @@
-import 'package:adhan/adhan.dart';
 import 'package:intl/intl.dart';
-import 'package:islamic_app/controller/home_controller.dart';
 import 'package:islamic_app/core/constant/image_url.dart';
-import 'package:islamic_app/core/shared/shared_perf.dart';
+import 'package:islamic_app/features/pray_time/controller/prayTime_controller.dart';
 
-late CalculationParameters parameters;
-
-check(HomeController controller) {
-  parameters = CalculationMethod.egyptian.getParameters();
-  parameters.madhab = Madhab.shafi;
-  controller.coordinates = Coordinates(
-      SharedPrefController().latitude!, SharedPrefController().longitude!);
-  controller.prayerTimes = PrayerTimes.today(controller.coordinates, parameters);
+check(PrayTimeController controller) {
   if (controller.prayerTimes.nextPrayer().toString() == "Prayer.none") {
     controller.currentPray = "الفجر";
     controller.image = ImageUrl.fajr;
     controller.prayTime = DateFormat.jm().format(controller.prayerTimes.fajr);
     if (controller.dateTime.hour > 12) {
-      controller.dateTime = controller.prayerTimes.fajr.toLocal();
-    } else {
       controller.dateTime =
           controller.prayerTimes.fajr.toLocal().add(Duration(days: 1));
+    } else {
+      controller.dateTime = controller.prayerTimes.fajr.toLocal();
     }
   } else if (controller.prayerTimes.nextPrayer().toString() == "Prayer.isha") {
     controller.currentPray = "العشاء";
@@ -55,11 +46,6 @@ check(HomeController controller) {
     controller.currentPray = "الفجر";
     controller.image = ImageUrl.fajr;
     controller.prayTime = DateFormat.jm().format(controller.prayerTimes.fajr);
-    if (controller.dateTime.hour > 12) {
-      controller.dateTime = controller.prayerTimes.fajr.toLocal();
-    } else {
-      controller.dateTime =
-          controller.prayerTimes.fajr.toLocal().add(Duration(days: 1));
-    }
+     controller.dateTime = controller.prayerTimes.fajr.toLocal();
   }
 }
