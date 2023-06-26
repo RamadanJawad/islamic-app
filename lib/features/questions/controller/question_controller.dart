@@ -8,7 +8,6 @@ import 'package:islamic_app/core/shared/shared_perf.dart';
 import 'package:islamic_app/features/questions/data/questions.dart';
 import 'package:islamic_app/features/questions/model/questions.dart';
 import 'package:islamic_app/features/questions/view/screen/score_screen.dart';
-import 'package:just_audio/just_audio.dart';
 
 class QuestionController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -20,7 +19,6 @@ class QuestionController extends GetxController
   late AnimationController animationController;
   late Animation animation;
   RxInt questionNumber = 0.obs;
-  AudioPlayer audioPlayer = AudioPlayer();
   PageController pageController = PageController();
   Timer? timer;
   bool answerChecked = false;
@@ -76,7 +74,6 @@ class QuestionController extends GetxController
     correctAns = question.answer!;
     selectIndex = val;
     if (correctAns == selectIndex) {
-      audioPlayer.play();
       visible = true;
       answers.add(selectIndex.toString());
       numOfCorrectAns++;
@@ -169,7 +166,6 @@ class QuestionController extends GetxController
 
   @override
   void onInit() {
-    audioPlayer.setAsset("assets/sound/correct.mp3");
     updateLevel();
     animationController =
         AnimationController(duration: const Duration(seconds: 30), vsync: this);
