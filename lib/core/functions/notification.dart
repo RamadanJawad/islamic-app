@@ -1,75 +1,77 @@
 import 'package:get/get.dart';
+import 'package:islamic_app/core/class/awesome_notifications_manager.dart';
+import 'package:islamic_app/core/shared/shared_perf.dart';
 import 'package:islamic_app/features/pray_time/controller/prayTime_controller.dart';
 
 class CheckNotifications {
   PrayTimeController prayTimeController = Get.put(PrayTimeController());
+  NotificationManager notificationManager = NotificationManager();
   prayTimeNotification() {
-    Future.delayed(
-      const Duration(seconds: 1),
-      () async {
-        await prayTimeController.service.scheduledNotification2(
-            id: 11,
-            title: "اذان الفجر",
-            body: "حان الان موعد صلاة الفجر",
-            hour: prayTimeController.prayerTimes.fajr.hour,
-            minutes: prayTimeController.prayerTimes.fajr.minute);
-
-        await prayTimeController.service.scheduledNotification2(
-            id: 12,
-            title: "اذان الظهر",
-            body: "حان الان موعد صلاة الظهر",
-            hour: prayTimeController.prayerTimes.dhuhr.hour,
-            minutes: prayTimeController.prayerTimes.dhuhr.minute);
-
-        await prayTimeController.service.scheduledNotification2(
-            id: 13,
-            title: "اذان العصر",
-            body: "حان الان موعد صلاة العصر",
-            hour: prayTimeController.prayerTimes.asr.hour,
-            minutes: prayTimeController.prayerTimes.asr.minute);
-
-        await prayTimeController.service.scheduledNotification2(
-            id: 14,
-            title: "اذان المغرب",
-            body: "حان الان موعد صلاة المغرب",
-            hour: prayTimeController.prayerTimes.maghrib.hour,
-            minutes: prayTimeController.prayerTimes.maghrib.minute);
-
-        await prayTimeController.service.scheduledNotification2(
-            id: 15,
-            title: "اذان العشاء",
-            body: "حان الان موعد صلاة العشاء",
-            hour: prayTimeController.prayerTimes.isha.hour,
-            minutes: prayTimeController.prayerTimes.isha.minute);
-      },
-    );
+    NotificationManager.displayPrayTimeNotification(
+        id: 1,
+        title: "اذان الفجر",
+        description: "حان الان موعد صلاة الفجر",
+        hour: SharedPrefController().fajrHour!,
+        minute: SharedPrefController().fajrMinute!);
+    NotificationManager.displayPrayTimeNotification(
+        id: 2,
+        title: "اذان الظهر",
+        description: "حان الان موعد صلاة الظهر",
+        hour: SharedPrefController().dhurHour!,
+        minute: SharedPrefController().dhurMinute!);
+    NotificationManager.displayPrayTimeNotification(
+        id: 3,
+        title: "اذان العصر",
+        description: "حان الان موعد صلاة العصر",
+        hour: SharedPrefController().asrHour!,
+        minute: SharedPrefController().asrMinute!);
+    NotificationManager.displayPrayTimeNotification(
+        id: 4,
+        title: "اذان المغرب",
+        description: "حان الان موعد صلاة المغرب",
+        hour: SharedPrefController().magrabHour!,
+        minute: SharedPrefController().magrabMinute!);
+    NotificationManager.displayPrayTimeNotification(
+        id: 5,
+        title: "اذان العشاء",
+        description: "حان الان موعد صلاة العشاء",
+        hour: SharedPrefController().ishaHour!,
+        minute: SharedPrefController().ishaMinute!);
   }
 
   morningNotification() async {
-    await prayTimeController.service.scheduledNotification(
-        hour: 6,
-        minutes: 00,
-        id: 16,
+    NotificationManager.displayDailyNotification(
+        id: 6,
+        hour: 06,
+        minute: 00,
         title: "أذكار الصباح",
-        body: "لا تنسى قراءة أذكار الصباح فهي حصنك المنيع");
+        description: "لا تنسى قراءة أذكار الصباح فهي حصنك المنيع");
   }
 
   nightNotification() async {
-    await prayTimeController.service.scheduledNotification(
-        hour: 16,
-        minutes: 00,
-        id: 17,
+    NotificationManager.displayDailyNotification(
+        id: 7,
+        hour: 20,
+        minute: 00,
         title: "أذكار المساء",
-        body: ".لا تنسى قراءة أذكار المساء فهي حصنك المنيع");
+        description: ".لا تنسى قراءة أذكار المساء فهي حصنك المنيع");
   }
+
   otherNotification() async {
-    await prayTimeController.service.showScheduledNotification(
-        id: 19,
+    NotificationManager.displayHourlyNotifications(
+        id: 8,
         title: "الصلاة على النبي",
-        body: "اللهم صلِ وسلم وزِد وبارك على سيدنا محمد صلاةً تشفي بها صدورنا وتزكي بها نفوسنا وتطيب بها أرواحنا وتعطر بها أفواهنا.");
+        description:
+            "اللهم صلِ وسلم وزِد وبارك على سيدنا محمد صلاةً تشفي بها صدورنا وتزكي بها نفوسنا وتطيب بها أرواحنا وتعطر بها أفواهنا.");
   }
 
   fridayNotification() async {
-    await prayTimeController.service.fridayNotification();
+    NotificationManager.displayWeeklyNotification(
+        id: 9,
+        title: 'جمعة مباركة',
+        description:
+            'اكثروا من الصلاة على سيدنا محمد ولا تنسى قراءة سورة الكهف',
+        dayOfWeek: DateTime.friday,
+        hour: 08);
   }
 }

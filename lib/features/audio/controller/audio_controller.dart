@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dio/dio.dart';
+import 'package:islamic_app/features/audio/view/widget/common.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,12 +9,12 @@ import 'package:islamic_app/core/functions/awesome_dialog.dart';
 import 'package:islamic_app/core/functions/check_internet.dart';
 import 'package:islamic_app/core/functions/snackbar.dart';
 import 'package:islamic_app/data/data.dart';
+import 'package:rxdart/rxdart.dart' as rx;
+import 'package:just_audio_background/just_audio_background.dart';
 
 class AudioController extends GetxController {
   bool isPlaying = false;
-  final player = AudioPlayer();
-  Duration duration = Duration.zero;
-  Duration position = Duration.zero;
+  late AudioPlayer player;
   BuildContext? context = Get.context!;
   bool isFound = false;
   bool isRepeatModeEnabled = false;
@@ -57,7 +58,18 @@ class AudioController extends GetxController {
       stepCounter++;
       id = Data.surah_number[stepCounter];
       surah_name = Data().surahs[stepCounter];
-      player.setUrl("$url$id.mp3");
+      player.setAudioSource(
+        AudioSource.uri(
+          Uri.parse("$url$id.mp3"),
+          tag: MediaItem(
+            id: '1',
+            album: name,
+            title: surah_name,
+            artUri: Uri.parse(
+                "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"),
+          ),
+        ),
+      );
       update();
     }
   }
@@ -67,7 +79,18 @@ class AudioController extends GetxController {
       stepCounter--;
       id = Data.surah_number[stepCounter];
       surah_name = Data().surahs[stepCounter];
-      player.setUrl("$url$id.mp3");
+      player.setAudioSource(
+        AudioSource.uri(
+          Uri.parse("$url$id.mp3"),
+          tag: MediaItem(
+            id: '1',
+            album: name,
+            title: surah_name,
+            artUri: Uri.parse(
+                "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"),
+          ),
+        ),
+      );
       update();
     }
   }
@@ -77,7 +100,7 @@ class AudioController extends GetxController {
     surah_url = "$url${Data.surah_number[index]}.mp3";
     id = Data.surah_number[index];
     marge = "$name-$surah_name.mp3";
-    bindPlayer();
+    init();
     update();
   }
 
@@ -167,24 +190,44 @@ class AudioController extends GetxController {
     update();
   }
 
-  bindPlayer() async {
+  Stream<PositionData> get positionDataStream =>
+      rx.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+          player.positionStream,
+          player.bufferedPositionStream,
+          player.durationStream,
+          (position, bufferedPosition, duration) => PositionData(
+              position, bufferedPosition, duration ?? Duration.zero));
+
+  init() async {
     String filePath = "/storage/emulated/0/download/$marge";
     isFound = await File(filePath).exists();
     if (isFound) {
-      await player.setFilePath("/storage/emulated/0/download/$marge");
+      await player.setAudioSource(
+        AudioSource.file(
+          "/storage/emulated/0/download/$marge",
+          tag: MediaItem(
+            id: '1',
+            album: name,
+            title: surah_name,
+            artUri: Uri.parse(
+                "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"),
+          ),
+        ),
+      );
     } else {
-      await player.setUrl(surah_url);
+      await player.setAudioSource(
+        AudioSource.uri(
+          Uri.parse(surah_url),
+          tag: MediaItem(
+            id: '1',
+            album: name,
+            title: surah_name,
+            artUri: Uri.parse(
+                "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"),
+          ),
+        ),
+      );
     }
-    duration = player.duration!;
-    update();
-    player.positionStream.listen((event) {
-      Duration temp = event;
-      position = temp;
-      update();
-    });
-    player.durationStream.listen((event) {
-      duration = event as Duration;
-    });
   }
 
   getPath({String? name}) async {
@@ -215,8 +258,9 @@ class AudioController extends GetxController {
 
   @override
   void onInit() {
+    player = AudioPlayer();
     super.onInit();
     initPatForm();
-    bindPlayer();
+    init();
   }
 }

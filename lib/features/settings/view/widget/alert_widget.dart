@@ -145,35 +145,6 @@ class AlertWidget extends StatelessWidget {
                 )
               ],
             ),
-            const Divider(),
-            Row(
-              children: [
-                Image.asset(
-                  ImageUrl.notification5,
-                  width: 25.w,
-                  height: 25.h,
-                ),
-                SizedBox(
-                  width: 5.w,
-                ),
-                Text(
-                  "تنبيهات الصلاة على النبي",
-                  style: TextStyle(
-                      fontFamily: "ibm",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
-                ),
-                const Spacer(),
-                SwitchButton(
-                  value: controller.value5,
-                  onChangeMethod: (value) {
-                    controller.onChange5(value);
-                    SharedPrefController().saveStatus5(status5: value);
-                    controller.otherNotification();
-                  },
-                )
-              ],
-            ),
             SizedBox(
               height: 5.h,
             )

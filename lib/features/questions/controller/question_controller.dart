@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:islamic_app/core/cache/cache.dart';
+import 'package:islamic_app/core/functions/awesome_dialog.dart';
 import 'package:islamic_app/core/shared/shared_perf.dart';
 import 'package:islamic_app/features/questions/data/questions.dart';
 import 'package:islamic_app/features/questions/model/questions.dart';
@@ -27,6 +29,9 @@ class QuestionController extends GetxController
   List<String> answers = [];
   CacheData cacheData = CacheData();
   bool visiblePoll = false;
+  bool isClickTimer = false;
+  bool isClickPool = false;
+  BuildContext context = Get.context!;
 
   List<dynamic> questionLevel() {
     switch (cacheData.getQuestionLevel()) {
@@ -98,8 +103,18 @@ class QuestionController extends GetxController
   }
 
   showPoll() {
-    visiblePoll = true;
-    update();
+    if (!isClickPool) {
+      visiblePoll = true;
+      isClickPool = true;
+      update();
+    } else {
+      showAwesomeDialog(
+          btnOkOnPress: () => Get.delete(),
+          context: context,
+          dialogType: DialogType.warning,
+          description:
+              "لا يمكنك استخدام هذه المساعدة اكثر من مرة خلال المستوى");
+    }
   }
 
   void nextQuestion() {
@@ -136,9 +151,20 @@ class QuestionController extends GetxController
   }
 
   void resetTimer() {
-    animationController.stop();
-    animationController.reset();
-    animationController.forward().whenComplete(nextQuestion);
+    if (!isClickTimer) {
+      animationController.stop();
+      animationController.reset();
+      animationController.forward().whenComplete(nextQuestion);
+      isClickTimer = true;
+      update();
+    } else {
+      showAwesomeDialog(
+          btnOkOnPress: () => Get.delete(),
+          context: context,
+          dialogType: DialogType.warning,
+          description:
+              "لا يمكنك استخدام هذه المساعدة اكثر من مرة خلال المستوى");
+    }
   }
 
   @override

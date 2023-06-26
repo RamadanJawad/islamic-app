@@ -45,7 +45,7 @@ class DrawerWidget extends StatelessWidget {
                 ),
                 Tab(
                   child: Text(
-                    "المحفوظات",
+                    "التفسير",
                     style: TextStyle(fontFamily: "ibm", fontSize: 16.sp),
                   ),
                 ),
@@ -57,7 +57,7 @@ class DrawerWidget extends StatelessWidget {
             children: [
               Tab1Screen(controllerPinch: controllerPinch),
               Tab2Screen(controllerPinch: controllerPinch),
-              Tab3Screen(),
+              QuranScreen(),
             ],
           ),
         );

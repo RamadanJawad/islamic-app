@@ -15,7 +15,7 @@ finishSplash() {
 initHome() {
   Get.put(HomeController());
   Get.put(PrayTimeController());
-  Get.put(AudioController());
+  Get.put(SettingController());
   finishSplash();
 }
 

@@ -1,12 +1,9 @@
 import 'dart:async';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/class/notification_manager.dart';
-import 'package:islamic_app/core/functions/awesome_dialog.dart';
 import 'package:islamic_app/core/functions/notification.dart';
 import 'package:islamic_app/core/shared/shared_perf.dart';
-import 'package:islamic_app/data/data.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class SettingController extends GetxController
     with GetTickerProviderStateMixin {
@@ -14,9 +11,7 @@ class SettingController extends GetxController
   bool value2 = false;
   bool value3 = false;
   bool value4 = false;
-  bool value5 = false;
   int value = 1;
-  late LocalNotificationService service;
 
   Duration duration = const Duration(milliseconds: 370);
   late Animation<Alignment> animation;
@@ -34,12 +29,6 @@ class SettingController extends GetxController
     }
     if (SharedPrefController().status4 != null) {
       value4 = SharedPrefController().status4!;
-    }
-    if (SharedPrefController().status5 != null) {
-      value5 = SharedPrefController().status5!;
-    }
-    if (SharedPrefController().status6 != null) {
-      value = SharedPrefController().status6!;
     }
   }
 
@@ -63,91 +52,85 @@ class SettingController extends GetxController
     update();
   }
 
-  onChange5(bool val) {
-    value5 = val;
-    update();
-  }
-
-  onChangeValue(val) {
-    value = val;
-    SharedPrefController().saveStatus6(status6: value);
-    update();
-  }
-
-  permissionNotification() async {
-    await Permission.notification.isDenied.then((value) {
-      if (value) {
-        Permission.notification.request();
-      }
-    });
-  }
-
   prayTimeNotification() {
-    Future.delayed(const Duration(seconds: 1), () {
-      if (SharedPrefController().status1 == true) {
-        print(SharedPrefController().status1);
-        CheckNotifications().prayTimeNotification();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
       } else {
-        service.cancelNotification(11);
-        service.cancelNotification(12);
-        service.cancelNotification(13);
-        service.cancelNotification(14);
-        service.cancelNotification(15);
+        Future.delayed(const Duration(seconds: 1), () {
+          if (SharedPrefController().status1 == true) {
+            CheckNotifications().prayTimeNotification();
+          } else {
+            AwesomeNotifications().cancelSchedule(1);
+            AwesomeNotifications().cancelSchedule(2);
+            AwesomeNotifications().cancelSchedule(3);
+            AwesomeNotifications().cancelSchedule(4);
+            AwesomeNotifications().cancelSchedule(5);
+          }
+          update();
+        });
       }
-      update();
     });
   }
 
   morningNotification() {
-    Future.delayed(const Duration(seconds: 1), () {
-      if (SharedPrefController().status2 == true) {
-        CheckNotifications().morningNotification();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
       } else {
-        service.cancelNotification(16);
+        Future.delayed(const Duration(seconds: 1), () {
+          if (SharedPrefController().status2 == true) {
+            CheckNotifications().morningNotification();
+          } else {
+            AwesomeNotifications().cancelSchedule(6);
+          }
+          update();
+        });
       }
-      update();
     });
   }
 
   nightNotification() {
-    Future.delayed(const Duration(seconds: 1), () {
-      if (SharedPrefController().status3 == true) {
-        CheckNotifications().nightNotification();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
       } else {
-        service.cancelNotification(17);
+        Future.delayed(const Duration(seconds: 1), () {
+          if (SharedPrefController().status3 == true) {
+            CheckNotifications().nightNotification();
+          } else {
+            AwesomeNotifications().cancelSchedule(7);
+          }
+          update();
+        });
       }
-      update();
     });
   }
 
   fridayNotification() {
-    Future.delayed(const Duration(seconds: 1), () {
-      if (SharedPrefController().status4 == true) {
-        CheckNotifications().fridayNotification();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
       } else {
-        service.cancelNotification(18);
+        Future.delayed(const Duration(seconds: 1), () {
+          if (SharedPrefController().status4 == true) {
+            CheckNotifications().fridayNotification();
+          } else {
+            AwesomeNotifications().cancelSchedule(8);
+          }
+          update();
+        });
       }
-      update();
     });
   }
-
-  otherNotification() {
-    Future.delayed(const Duration(seconds: 1), () {
-      if (SharedPrefController().status5 == true) {
-        CheckNotifications().otherNotification();
-      } else {
-        service.cancelNotification(19);
-      }
-      update();
-    });
-  }
-
   @override
   void onInit() {
-    permissionNotification();
-    getData();
-    service = LocalNotificationService();
     super.onInit();
+    prayTimeNotification();
+    morningNotification();
+    nightNotification();
+    fridayNotification();
+    getData();
     animationController = AnimationController(vsync: this, duration: duration);
     animation =
         AlignmentTween(begin: Alignment.centerLeft, end: Alignment.centerRight)

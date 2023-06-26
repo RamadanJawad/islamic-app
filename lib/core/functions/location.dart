@@ -26,10 +26,12 @@ Future<Position> determinePosition() async {
   return await Geolocator.getCurrentPosition();
 }
 
-getLatAndLong() async {
+getLatAndLong(PrayTimeController controller) async {
   Position position = await determinePosition();
   SharedPrefController()
       .saveCoordinate(long: position.longitude, lat: position.latitude);
+  saveData(controller);
+  print("save data sucessfully");
 }
 
 checkLocation(BuildContext context, PrayTimeController controller) async {

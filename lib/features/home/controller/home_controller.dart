@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/class/notification_manager.dart';
 import 'package:islamic_app/data/data.dart';
 import 'package:islamic_app/features/audio/controller/audio_controller.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeController extends GetxController {
   AudioController audioController = AudioController();
   late Timer _timer;
-  late final LocalNotificationService service;
   late bool serviceEnable;
   late PageController pageController;
   late var dua;
@@ -37,12 +36,11 @@ class HomeController extends GetxController {
     update();
   }
 
+  
+
   @override
   void onInit() {
     readData();
-    audioController.player.setUrl(audioController.surah_url);
-    service = LocalNotificationService();
-    service.initialize();
     super.onInit();
     pageController = PageController();
     _timer = Timer.periodic(

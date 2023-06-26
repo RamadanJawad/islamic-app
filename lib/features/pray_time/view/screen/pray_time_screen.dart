@@ -23,7 +23,7 @@ class PrayTimeScreen extends StatelessWidget {
               onPressed: () {
                 if (SharedPrefController().latitude == null &&
                     SharedPrefController().longitude == null) {
-                  getLatAndLong();
+                  getLatAndLong(controller);
                 } else {
                   showSnackBar(
                       context, "تم تحديث أوقات الصلاة بنجاح", Colors.grey);

@@ -1,7 +1,6 @@
 import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/class/notification_manager.dart';
 import 'package:islamic_app/core/shared/shared_perf.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hijri/hijri_calendar.dart';
@@ -16,7 +15,6 @@ class PrayTimeController extends GetxController {
   late PageController pageController;
   late String image;
   late DateTime dateTime = DateTime.now();
-  late final LocalNotificationService service;
   bool isTapped = false;
   bool isTapped1 = false;
   bool isTapped2 = false;
@@ -73,8 +71,6 @@ class PrayTimeController extends GetxController {
   void onInit() {
     showDate();
     initPryTime();
-    service = LocalNotificationService();
-    service.initialize();
     super.onInit();
   }
 }

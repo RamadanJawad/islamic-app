@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:islamic_app/core/constant/color.dart';
 import 'package:islamic_app/features/audio/controller/audio_controller.dart';
+import 'package:islamic_app/features/audio/view/widget/common.dart';
+import 'package:just_audio/just_audio.dart';
 
 class PlayTool extends StatelessWidget {
   const PlayTool({super.key});
@@ -13,41 +15,25 @@ class PlayTool extends StatelessWidget {
     return GetBuilder<AudioController>(builder: (controller) {
       return Column(
         children: [
-          SliderTheme(
-            data: SliderTheme.of(context).copyWith(
-              activeTrackColor: Colors.white,
-              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 7.0),
-            ),
-            child: Slider(
-              min: 0,
-              max: controller.duration.inSeconds.toDouble(),
-              activeColor: ColorCode.mainColor,
-              inactiveColor: Colors.grey,
-              value: controller.position.inSeconds.toDouble(),
-              onChanged: (value) async {
-                final position = Duration(seconds: value.toInt());
-                await controller.player.seek(position);
-                controller.update();
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25.w),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  controller.position.toString().split(".")[0],
-                  style: const TextStyle(
-                      fontFamily: "ibm", fontSize: 13, color: Colors.grey),
-                ),
-                Text(
-                  controller.duration.toString().split(".")[0],
-                  style: const TextStyle(
-                      fontFamily: "ibm", fontSize: 13, color: Colors.grey),
-                ),
-              ],
-            ),
+          StreamBuilder<PositionData>(
+            stream: controller.positionDataStream,
+            builder: (context, snapshot) {
+              final positionData = snapshot.data;
+              return Column(
+                children: [
+                  SeekBar(
+                    visible: true,
+                    duration: positionData?.duration ?? Duration.zero,
+                    position: positionData?.position ?? Duration.zero,
+                    bufferedPosition:
+                        positionData?.bufferedPosition ?? Duration.zero,
+                    onChangeEnd: (newPosition) {
+                      controller.player.seek(newPosition);
+                    },
+                  ),
+                ],
+              );
+            },
           ),
           SizedBox(
             height: 15.h,
@@ -101,26 +87,88 @@ class PlayTool extends StatelessWidget {
                 SizedBox(
                   width: 15.w,
                 ),
-                Container(
-                  width: 35.w,
-                  height: 35.h,
-                  decoration: BoxDecoration(
-                    color:
-                        controller.isPlaying ? Colors.red : ColorCode.mainColor,
-                    borderRadius: BorderRadius.circular(10).r,
-                  ),
-                  child: IconButton(
-                    onPressed: () async {
-                      controller.checkPlaying();
-                    },
-                    icon: Icon(
-                      controller.isPlaying
-                          ? CupertinoIcons.pause
-                          : CupertinoIcons.play_fill,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                  ),
+                StreamBuilder<PlayerState>(
+                  stream: controller.player.playerStateStream,
+                  builder: (context, snapshot) {
+                    final playerState = snapshot.data;
+                    final processingState = playerState?.processingState;
+                    final playing = playerState?.playing;
+                    if (processingState == ProcessingState.loading ||
+                        processingState == ProcessingState.buffering) {
+                      return Container(
+                        width: 35.w,
+                        height: 35.h,
+                        margin: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10).r,
+                        ),
+                        child: const CircularProgressIndicator(
+                          color: ColorCode.mainColor,
+                        ),
+                      );
+                    } else if (playing != true) {
+                      return Container(
+                        width: 35.w,
+                        height: 35.h,
+                        decoration: BoxDecoration(
+                          color: playing ?? true
+                              ? Colors.red
+                              : ColorCode.mainColor,
+                          borderRadius: BorderRadius.circular(10).r,
+                        ),
+                        child: IconButton(
+                          onPressed: () async {
+                            controller.player.play();
+                          },
+                          icon: const Icon(
+                            CupertinoIcons.play_fill,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      );
+                    } else if (processingState != ProcessingState.completed) {
+                      return Container(
+                        width: 35.w,
+                        height: 35.h,
+                        decoration: BoxDecoration(
+                          color: playing! ? Colors.red : ColorCode.mainColor,
+                          borderRadius: BorderRadius.circular(10).r,
+                        ),
+                        child: IconButton(
+                          onPressed: () async {
+                            controller.player.pause();
+                          },
+                          icon: const Icon(
+                            CupertinoIcons.pause_fill,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        width: 35.w,
+                        height: 35.h,
+                        decoration: BoxDecoration(
+                          color: ColorCode.mainColor,
+                          borderRadius: BorderRadius.circular(10).r,
+                        ),
+                        child: IconButton(
+                          onPressed: () async {
+                            controller.player.seek(Duration.zero,
+                            index: controller.player.effectiveIndices!.first);
+                          },
+                          icon: const Icon(
+                            CupertinoIcons.reply,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      ); 
+                    }
+                  },
                 ),
                 SizedBox(
                   width: 15.w,

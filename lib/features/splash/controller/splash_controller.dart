@@ -5,7 +5,7 @@ import 'package:islamic_app/routes/routes.dart';
 class SplashController extends GetxController
     with GetSingleTickerProviderStateMixin {
   late AnimationController controller = AnimationController(
-    duration:  Duration(seconds: 2),
+    duration: const Duration(seconds: 2),
     vsync: this,
   );
   late CurvedAnimation curve =

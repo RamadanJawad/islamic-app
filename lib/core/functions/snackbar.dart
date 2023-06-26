@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void showSnackBar(BuildContext context, String content,Color backgroundColor) {
+void showSnackBar(BuildContext context, String content, Color backgroundColor) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
@@ -11,6 +11,7 @@ void showSnackBar(BuildContext context, String content,Color backgroundColor) {
       ),
       behavior: SnackBarBehavior.floating,
       backgroundColor: backgroundColor,
+      duration: const Duration(seconds: 1),
     ),
   );
 }

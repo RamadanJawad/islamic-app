@@ -7,12 +7,8 @@ check(PrayTimeController controller) {
     controller.currentPray = "الفجر";
     controller.image = ImageUrl.fajr;
     controller.prayTime = DateFormat.jm().format(controller.prayerTimes.fajr);
-    if (controller.dateTime.hour > 12) {
-      controller.dateTime =
-          controller.prayerTimes.fajr.toLocal().add(Duration(days: 1));
-    } else {
-      controller.dateTime = controller.prayerTimes.fajr.toLocal();
-    }
+    controller.dateTime =
+        controller.prayerTimes.fajr.toLocal().add(const Duration(days: 1));
   } else if (controller.prayerTimes.nextPrayer().toString() == "Prayer.isha") {
     controller.currentPray = "العشاء";
     controller.image = ImageUrl.isha;
@@ -46,6 +42,6 @@ check(PrayTimeController controller) {
     controller.currentPray = "الفجر";
     controller.image = ImageUrl.fajr;
     controller.prayTime = DateFormat.jm().format(controller.prayerTimes.fajr);
-     controller.dateTime = controller.prayerTimes.fajr.toLocal();
+    controller.dateTime = controller.prayerTimes.fajr.toLocal();
   }
 }

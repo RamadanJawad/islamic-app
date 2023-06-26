@@ -26,7 +26,7 @@ class BodyWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
+              SizedBox(
                 width: 200.w,
                 child: CustomDropdown.search(
                   borderSide:const BorderSide(color: ColorCode.mainColor),

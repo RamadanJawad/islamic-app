@@ -21,23 +21,11 @@ class QuranScreen extends StatelessWidget {
             drawer: Drawer(
               child: DrawerWidget(controllerPinch: controllerPinch),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                SharedPrefController().savePage(index: controllerPinch.page);
-              },
-              backgroundColor: Colors.black,
-              child: const Icon(Icons.bookmark),
-            ),
             appBar: AppBar(
               title: Text("القرآن الكريم",
                   style: TextStyle(fontFamily: "ibm", fontSize: 20.sp)),
               backgroundColor: ColorCode.mainColor,
               elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: const Radius.circular(20).r,
-                    bottomRight: const Radius.circular(20).r),
-              ),
             ),
             body: SafeArea(
               child: PdfViewPinch(
