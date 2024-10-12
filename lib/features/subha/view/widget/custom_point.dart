@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:islamic_app/core/resources/manager_assets.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/subha/controller/tasabih_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
-import 'package:islamic_app/core/constant/image_url.dart';
 import 'package:islamic_app/features/subha/view/widget/my_pointer.dart';
 
 class CustomPoint extends StatelessWidget {
@@ -13,14 +16,14 @@ class CustomPoint extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<TasabihController>(builder: (controller) {
       return SizedBox(
-        width: 300.w,
-        height: 300.h,
+        width: ManagerWidth.w300,
+        height: ManagerHeight.h300,
         child: Stack(
           children: [
             Center(
               child: SizedBox(
-                width: 280.w,
-                height: 280.h,
+                width: ManagerWidth.w280,
+                height: ManagerHeight.h280,
                 child: AnimatedBuilder(
                   animation: controller.animation!,
                   builder: (_, child) {
@@ -30,33 +33,34 @@ class CustomPoint extends StatelessWidget {
                     );
                   },
                   child: Image.asset(
-                    ImageUrl.decoration,
-                    color: ColorCode.mainColor,
+                    ManagerAssets.decoration,
+                    color: ManagerColors.mainColor,
                   ),
                 ),
               ),
             ),
             Center(
               child: SizedBox(
-                height: 150.h,
-                width: 150.w,
+                width: ManagerWidth.w150,
+                height: ManagerHeight.h150,
                 child: CustomPaint(
                   foregroundPainter: MyPainter(
-                      lineColor: ColorCode.mainColor.withOpacity(0),
+                      lineColor: ManagerColors.mainColor,
                       completeColor: Colors.black54,
                       completePercent: controller.value,
-                      width: 7.0.w),
+                      width: ManagerWidth.w8),
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                            shape:const CircleBorder(),
+                            shape: const CircleBorder(),
                             backgroundColor:
-                                ColorCode.mainColor.withOpacity(0.5)),
+                                ManagerColors.mainColor.withOpacity(0.5)),
                         child: Text(
                           "${controller.value}",
-                          style:
-                              TextStyle(fontFamily: "ibm", fontSize: 25.sp),
+                          style: getBoldTextStyle(
+                              fontSize: ManagerFontSize.s24,
+                              color: ManagerColors.white),
                         ),
                         onPressed: () {
                           controller.checkPercent();

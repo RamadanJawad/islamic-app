@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:intl/intl.dart';
-import 'package:islamic_app/core/constant/image_url.dart';
+import 'package:islamic_app/core/resources/manager_assets.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/features/home/view/widget/custom_text.dart';
 import 'package:islamic_app/features/pray_time/controller/prayTime_controller.dart';
 import 'package:islamic_app/features/pray_time/view/widget/custom_prayTime.dart';
 import 'package:islamic_app/features/pray_time/view/widget/praytime_widget.dart';
@@ -16,12 +19,15 @@ class BodyPrayTime extends StatelessWidget {
         return Column(
           children: [
             const PrayTimeWidget(),
+            const CustomText(
+              text: "أوقات الصلاة",
+            ),
             CustomPrayTime(
               isTapped: controller.isTapped,
               onTap: () {
                 controller.isTapController();
               },
-              imagePath: ImageUrl.fajr,
+              imagePath: ManagerAssets.fajr,
               prayTime: DateFormat.jm().format(controller.prayerTimes.fajr),
               prayTimeName: "صلاة الفجر",
               text1:
@@ -34,9 +40,8 @@ class BodyPrayTime extends StatelessWidget {
               onTap: () {
                 controller.isTapController1();
               },
-              imagePath: ImageUrl.sunrise,
-              prayTime:
-                  DateFormat.jm().format(controller.prayerTimes.sunrise),
+              imagePath: ManagerAssets.sunrise,
+              prayTime: DateFormat.jm().format(controller.prayerTimes.sunrise),
               prayTimeName: "صلاة الشروق",
               text1:
                   "من صلى الفجر في جماعة، ثم جلس يذكر الله حتى تطلع الشمس، ثم صلى ركعتين؛ كانت له كأجر حجة وعمرة - هكذا قال- تامة",
@@ -48,7 +53,7 @@ class BodyPrayTime extends StatelessWidget {
               onTap: () {
                 controller.isTapController2();
               },
-              imagePath: ImageUrl.dhuhr,
+              imagePath: ManagerAssets.dhuhr,
               prayTime: DateFormat.jm().format(controller.prayerTimes.dhuhr),
               prayTimeName: "صلاة الظهر",
               text1:
@@ -61,7 +66,7 @@ class BodyPrayTime extends StatelessWidget {
               onTap: () {
                 controller.isTapController3();
               },
-              imagePath: ImageUrl.asr,
+              imagePath: ManagerAssets.asr,
               prayTime: DateFormat.jm().format(controller.prayerTimes.asr),
               prayTimeName: "صلاة العصر",
               text1:
@@ -74,9 +79,8 @@ class BodyPrayTime extends StatelessWidget {
               onTap: () {
                 controller.isTapController4();
               },
-              imagePath: ImageUrl.maghrib,
-              prayTime:
-                  DateFormat.jm().format(controller.prayerTimes.maghrib),
+              imagePath: ManagerAssets.maghrib,
+              prayTime: DateFormat.jm().format(controller.prayerTimes.maghrib),
               prayTimeName: "صلاة المغرب",
               text1:
                   "لا تزال أمتي بخير أو على الفطرة ما لم يؤخروا المغرب حتى تشتبك \nالنجوم",
@@ -88,7 +92,7 @@ class BodyPrayTime extends StatelessWidget {
               onTap: () {
                 controller.isTapController5();
               },
-              imagePath: ImageUrl.isha,
+              imagePath: ManagerAssets.isha,
               prayTime: DateFormat.jm().format(controller.prayerTimes.isha),
               prayTimeName: "صلاة العشاء",
               text1:
@@ -96,6 +100,17 @@ class BodyPrayTime extends StatelessWidget {
               text2:
                   "من صلى العشاء في جماعة فكأنما قام نصف الليل ومن صلى الص..",
             ),
+            Spacer(),
+            Container(
+                alignment: Alignment.center,
+                width: controller.homeController.bannerAd.size.width.toDouble(),
+                height:
+                    controller.homeController.bannerAd.size.height.toDouble(),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(ManagerRadius.r16)),
+                child: controller.homeController.isBannerAd
+                    ? AdWidget(ad: controller.homeController.bannerAd)
+                    : SizedBox.shrink()),
           ],
         );
       },

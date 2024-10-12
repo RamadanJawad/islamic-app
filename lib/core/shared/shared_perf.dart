@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+
 class SharedPrefController {
   SharedPrefController._();
 
@@ -18,17 +19,25 @@ class SharedPrefController {
     await _sharedPreferences.setDouble("long", long);
     await _sharedPreferences.setDouble("lat", lat);
   }
+
   Future<void> saveAnswersForLevel(int level, List<String> answers) async {
     await _sharedPreferences.setStringList('level_$level', answers);
   }
+
   Future<void> saveAllStarsPoint(int stars) async {
     await _sharedPreferences.setInt('stars', stars);
   }
+
   Future<List<String>> getAnswersForLevel(int level) async {
     return _sharedPreferences.getStringList('level_$level') ?? [];
   }
-  int? get getAllStarsPoint{
+
+  int? get getAllStarsPoint {
     return _sharedPreferences.getInt("stars") ?? 3;
+  }
+
+  Future<void> saveTheme({required bool isDarkMode}) async {
+    await _sharedPreferences.setBool("isDarkTheme", isDarkMode);
   }
 
   Future<void> saveStatus1({required bool status1}) async {
@@ -53,6 +62,10 @@ class SharedPrefController {
 
   Future<void> saveStatus6({required int status6}) async {
     await _sharedPreferences.setInt("status6", status6);
+  }
+
+  bool? get getThemeMode {
+    return _sharedPreferences.getBool("isDarkTheme");
   }
 
   double? get longitude {
@@ -136,14 +149,6 @@ class SharedPrefController {
     await _sharedPreferences.setString("isha", prayTime);
   }
 
-  Future<void> savePage({required int index}) async {
-    await _sharedPreferences.setInt("index", index);
-  }
-
-  int? get currentPage {
-    return _sharedPreferences.getInt("index");
-  }
-
   int? get fajrHour {
     return _sharedPreferences.getInt("hour1");
   }
@@ -206,8 +211,5 @@ class SharedPrefController {
 
   String? get prayShrouq {
     return _sharedPreferences.getString("shrouq");
-  }
-  clearQuestion()async{
-    await _sharedPreferences.remove("stars");
   }
 }

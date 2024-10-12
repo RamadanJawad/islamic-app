@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/data/data.dart';
+import 'package:islamic_app/core/data/data.dart';
 import 'package:islamic_app/features/athkar/view/screen/list_athkar.dart';
 
 class AthkarController extends GetxController {

@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/quran/controller/tabs_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
-import 'package:islamic_app/data/data.dart';
+import 'package:islamic_app/core/resources/color.dart';
+import 'package:islamic_app/core/data/data.dart';
 import 'package:pdfx/pdfx.dart';
 
 class Tab2Screen extends StatelessWidget {
@@ -37,7 +41,8 @@ class Tab2Screen extends StatelessWidget {
                         padding: const EdgeInsets.all(5),
                         margin: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10).r,
+                          borderRadius:
+                              BorderRadius.circular(ManagerRadius.r10),
                         ),
                         child: Row(
                           children: [
@@ -46,14 +51,15 @@ class Tab2Screen extends StatelessWidget {
                               children: [
                                 Image.asset(
                                   "assets/images/vector.png",
-                                  width: 40.w,
-                                  height: 40.h,
+                                  width: ManagerWidth.w40,
+                                  height: ManagerHeight.h40,
                                   color: ColorCode.mainColor,
                                 ),
                                 Text(
                                   "${index + 1}",
-                                  style: TextStyle(
-                                      fontSize: 14.sp, fontFamily: "ibm"),
+                                  style: getRegularTextStyle(
+                                      fontSize: ManagerFontSize.s15,
+                                      color: ManagerColors.black),
                                 ),
                               ],
                             ),
@@ -61,8 +67,9 @@ class Tab2Screen extends StatelessWidget {
                               width: 10.w,
                             ),
                             Text(Data.nameOfJusz[index],
-                                style: TextStyle(
-                                    fontFamily: "ibm", fontSize: 18.sp)),
+                                style: getRegularTextStyle(
+                                    fontSize: ManagerFontSize.s16,
+                                    color: ManagerColors.black)),
                           ],
                         ),
                       ),

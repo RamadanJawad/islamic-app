@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/constant/color.dart';
+import 'package:islamic_app/core/resources/color.dart';
 
 showDialogQuiz() {
   Get.defaultDialog(

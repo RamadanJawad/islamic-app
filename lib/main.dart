@@ -2,8 +2,8 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:hijri/hijri_calendar.dart';
-import 'package:islamic_app/core/constant/color.dart';
 import 'package:islamic_app/core/shared/shared_perf.dart';
 import 'package:islamic_app/routes/routes.dart';
 import 'package:just_audio_background/just_audio_background.dart';
@@ -57,6 +57,7 @@ void main() async {
     ],
   );
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   await SharedPrefController().initSharedPreferences();
   HijriCalendar.setLocal("ar");
   runApp(const MyApp());
@@ -71,8 +72,7 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        return GetMaterialApp(
-          theme: ThemeData(primaryColor: ColorCode.mainColor),
+        return const GetMaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateRoute: RouteGenerator.getRoute,
           initialRoute: Routes.splashView,

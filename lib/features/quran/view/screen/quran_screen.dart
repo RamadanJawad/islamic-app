@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/shared/shared_perf.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/quran/controller/tabs_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
 import 'package:islamic_app/features/quran/view/widget/drawer_widget.dart';
 import 'package:pdfx/pdfx.dart';
 
@@ -18,13 +18,17 @@ class QuranScreen extends StatelessWidget {
       child: GetBuilder<TabsController>(
         builder: (controller) {
           return Scaffold(
+            backgroundColor: ManagerColors.backgroundColor,
             drawer: Drawer(
               child: DrawerWidget(controllerPinch: controllerPinch),
             ),
             appBar: AppBar(
+              centerTitle: true,
               title: Text("القرآن الكريم",
-                  style: TextStyle(fontFamily: "ibm", fontSize: 20.sp)),
-              backgroundColor: ColorCode.mainColor,
+                  style: getRegularTextStyle(
+                      fontSize: ManagerFontSize.s20,
+                      color: ManagerColors.black)),
+              backgroundColor: ManagerColors.backgroundColor,
               elevation: 0,
             ),
             body: SafeArea(

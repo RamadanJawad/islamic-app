@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/data/data.dart';
 import 'package:pdfx/pdfx.dart';
 
 class QuranController extends GetxController

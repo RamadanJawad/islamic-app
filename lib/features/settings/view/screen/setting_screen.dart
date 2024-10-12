@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/constant/color.dart';
+import 'package:islamic_app/core/resources/color.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_strings.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/settings/controller/setting_controller.dart';
 import 'package:islamic_app/features/settings/view/widget/about_widget.dart';
 import 'package:islamic_app/features/settings/view/widget/alert_widget.dart';
@@ -15,12 +20,15 @@ class SettingScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        backgroundColor: ManagerColors.backgroundColor,
         appBar: AppBar(
-          backgroundColor: ColorCode.mainColor,
+          backgroundColor: ManagerColors.backgroundColor,
           automaticallyImplyLeading: false,
+          centerTitle: true,
           title: Text(
-            "الاعدادات",
-            style: TextStyle(fontFamily: "ibm", fontSize: 20.sp),
+            ManagerStrings.setting,
+            style: getRegularTextStyle(
+                fontSize: ManagerFontSize.s20, color: ManagerColors.black),
           ),
         ),
         body: SingleChildScrollView(
@@ -32,7 +40,7 @@ class SettingScreen extends StatelessWidget {
               children: [
                 const AlertWidget(),
                 SizedBox(
-                  height: 10.h,
+                  height: ManagerHeight.h10,
                 ),
                 const AboutWidget(),
               ],

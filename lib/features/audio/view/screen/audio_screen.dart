@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/data/data.dart';
+import 'package:islamic_app/core/data/data.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/audio/controller/audio_controller.dart';
 import 'package:islamic_app/features/audio/view/widget/header_widget.dart';
 import 'package:islamic_app/features/audio/view/widget/play_tool.dart';
@@ -17,18 +21,19 @@ class AudioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AudioController());
-    
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        backgroundColor: ManagerColors.backgroundColor,
         appBar: AppBar(
           iconTheme: const IconThemeData(color: Colors.black),
-          backgroundColor: Colors.white10,
+          backgroundColor: ManagerColors.backgroundColor,
           elevation: 0,
           title: Text(
             "القرآن استماع",
-            style: TextStyle(
-                fontFamily: "ibm", fontSize: 20.sp, color: Colors.black),
+            style: getRegularTextStyle(
+                fontSize: ManagerFontSize.s20, color: ManagerColors.black),
           ),
         ),
         body: SingleChildScrollView(
@@ -36,26 +41,26 @@ class AudioScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 10.h,
+                height: ManagerHeight.h10,
               ),
               const Center(child: HeaderAudio()),
               const PlayTool(),
               SizedBox(
-                height: 15.h,
+                height: ManagerHeight.h14,
               ),
               const TextWidget(
                 text1: "قارئ مقترح",
                 visible: false,
               ),
               SizedBox(
-                height: 15.h,
+                height: ManagerHeight.h14,
               ),
               const RecitersWidget(),
               SizedBox(
-                height: 15.h,
+                height: ManagerHeight.h14,
               ),
               SizedBox(
-                height: 10.h,
+                height: ManagerHeight.h10,
               ),
               for (int i = 0; i < Data().surahs.length; i++) ...{
                 SurahWidget(

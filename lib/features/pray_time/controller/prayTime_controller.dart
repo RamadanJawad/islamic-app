@@ -2,6 +2,7 @@ import 'package:adhan/adhan.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:islamic_app/core/shared/shared_perf.dart';
+import 'package:islamic_app/features/home/controller/home_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hijri/hijri_calendar.dart';
 
@@ -14,6 +15,7 @@ class PrayTimeController extends GetxController {
   late CalculationParameters parameter;
   late PageController pageController;
   late String image;
+  HomeController homeController = Get.find();
   late DateTime dateTime = DateTime.now();
   bool isTapped = false;
   bool isTapped1 = false;

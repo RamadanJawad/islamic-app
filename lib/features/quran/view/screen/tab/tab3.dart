@@ -1,14 +1,14 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/constant/color.dart';
-import 'package:islamic_app/core/shared/shared_perf.dart';
-import 'package:islamic_app/data/data.dart';
+import 'package:islamic_app/core/resources/color.dart';
+import 'package:islamic_app/core/data/data.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/quran/controller/tabs_controller.dart';
-import 'package:islamic_app/features/quran/model/quran.dart';
-import 'package:islamic_app/features/quran/model/tafseer.dart';
 
 class QuranScreen extends StatelessWidget {
   const QuranScreen({Key? key}) : super(key: key);
@@ -17,6 +17,7 @@ class QuranScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.put(TabsController());
     return Scaffold(
+      backgroundColor: ManagerColors.backgroundColor,
       body: Column(
         children: [
           Padding(
@@ -24,13 +25,18 @@ class QuranScreen extends StatelessWidget {
             child: CustomDropdown(
               borderSide: const BorderSide(color: ColorCode.mainColor),
               hintText: 'اختر السورة',
-              listItemStyle: const TextStyle(
-                  fontFamily: "ibm", color: ColorCode.mainColor),
-              selectedStyle: const TextStyle(fontFamily: "ibm"),
+              listItemStyle: getRegularTextStyle(
+                  fontSize: ManagerFontSize.s15,
+                  color: ManagerColors.mainColor),
+              selectedStyle: getRegularTextStyle(
+                  fontSize: ManagerFontSize.s15,
+                  color: ManagerColors.subTitleColor),
               items: Data().surahs,
-              hintStyle: const TextStyle(fontFamily: "ibm"),
+              hintStyle: getRegularTextStyle(
+                  fontSize: ManagerFontSize.s15,
+                  color: ManagerColors.subTitleColor),
               controller: controller.jobRoleDropdownCtrl,
-              borderRadius: BorderRadius.circular(10).r,
+              borderRadius: BorderRadius.circular(ManagerRadius.r10),
               onChanged: (select) {
                 controller.onChange(select);
               },
@@ -51,11 +57,14 @@ class QuranScreen extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(
                             horizontal: 5, vertical: 5),
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: Colors.grey.shade300),
+                            borderRadius:
+                                BorderRadius.circular(ManagerRadius.r10),
+                            color: Colors.white),
                         child: Text(
                           versesAndTafseer[index],
-                          style: TextStyle(fontFamily: "ibm", fontSize: 15.sp),
+                          style: getRegularTextStyle(
+                              fontSize: ManagerFontSize.s15,
+                              color: ManagerColors.black),
                         ),
                       );
                     },

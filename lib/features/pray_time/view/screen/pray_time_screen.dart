@@ -3,9 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:islamic_app/core/functions/location.dart';
 import 'package:islamic_app/core/functions/snackbar.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/core/shared/shared_perf.dart';
 import 'package:islamic_app/features/pray_time/controller/prayTime_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
+import 'package:islamic_app/core/resources/color.dart';
 import 'package:islamic_app/features/pray_time/view/widget/body_prayTime.dart';
 
 class PrayTimeScreen extends StatelessWidget {
@@ -17,6 +20,7 @@ class PrayTimeScreen extends StatelessWidget {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        backgroundColor: ManagerColors.backgroundColor,
         appBar: AppBar(
           actions: [
             IconButton(
@@ -32,10 +36,11 @@ class PrayTimeScreen extends StatelessWidget {
               icon: const Icon(Icons.my_location_sharp),
             )
           ],
-          backgroundColor: ColorCode.mainColor,
+          backgroundColor: ManagerColors.backgroundColor,
           title: Text(
             "أوقات الصلاة",
-            style: TextStyle(fontFamily: "ibm", fontSize: 20.sp),
+            style: getRegularTextStyle(
+                fontSize: ManagerFontSize.s20, color: ManagerColors.black),
           ),
         ),
         body: const BodyPrayTime(),

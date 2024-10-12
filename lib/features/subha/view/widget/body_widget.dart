@@ -1,9 +1,12 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_strings.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/subha/controller/tasabih_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
 
 class BodyWidget extends StatelessWidget {
   const BodyWidget({super.key});
@@ -15,29 +18,27 @@ class BodyWidget extends StatelessWidget {
         children: [
           Text(
             controller.selectedItem,
-            style: TextStyle(
-                fontFamily: "ibm",
-                fontSize: 22.sp,
-                color: ColorCode.secondaryColor),
+            style: getRegularTextStyle(
+                fontSize: ManagerFontSize.s22,
+                color: ManagerColors.secondaryColor),
           ),
           SizedBox(
-            height: 10.h,
+            height: ManagerHeight.h10,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 200.w,
-                child: CustomDropdown.search(
-                  borderSide:const BorderSide(color: ColorCode.mainColor),
-                  hintText: ' قائمة التسابيح',
+                width: ManagerWidth.w205,
+                child: CustomDropdown(
+                  hintText: ManagerStrings.subhaDropDown,
                   listItemStyle: const TextStyle(
-                      fontFamily: "ibm", color: ColorCode.mainColor),
-                  selectedStyle: const TextStyle(fontFamily: "ibm"),
+                      fontFamily: "Noor", color: ManagerColors.mainColor),
+                  selectedStyle: const TextStyle(fontFamily: "Noor"),
                   items: controller.items,
-                  hintStyle: const TextStyle(fontFamily: "ibm"),
+                  hintStyle: const TextStyle(fontFamily: "Noor"),
                   controller: controller.jobRoleDropdownCtrl,
-                  borderRadius: BorderRadius.circular(10).r,
+                  borderRadius: BorderRadius.circular(ManagerRadius.r10),
                   onChanged: (select) {
                     controller.onChange(select);
                   },
@@ -47,10 +48,10 @@ class BodyWidget extends StatelessWidget {
                   onTap: () {
                     controller.resetNumber();
                   },
-                  child: const Icon(
+                  child: Icon(
                     Icons.restart_alt_rounded,
-                    size: 45,
-                    color: ColorCode.mainColor,
+                    size: ManagerIconSize.s44,
+                    color: ManagerColors.mainColor,
                   )),
             ],
           ),

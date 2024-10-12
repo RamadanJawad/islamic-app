@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/constant/color.dart';
+import 'package:islamic_app/core/resources/color.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/audio/controller/audio_controller.dart';
-import 'package:islamic_app/features/audio/view/widget/common.dart';
 import 'package:just_audio/just_audio.dart';
 
 class PlayTool extends StatelessWidget {
@@ -15,77 +17,73 @@ class PlayTool extends StatelessWidget {
     return GetBuilder<AudioController>(builder: (controller) {
       return Column(
         children: [
-          StreamBuilder<PositionData>(
-            stream: controller.positionDataStream,
-            builder: (context, snapshot) {
-              final positionData = snapshot.data;
-              return Column(
+          Obx(()=>
+             Padding(
+              padding: EdgeInsets.symmetric(horizontal: ManagerWidth.w10),
+              child: Row(
                 children: [
-                  SeekBar(
-                    visible: true,
-                    duration: positionData?.duration ?? Duration.zero,
-                    position: positionData?.position ?? Duration.zero,
-                    bufferedPosition:
-                        positionData?.bufferedPosition ?? Duration.zero,
-                    onChangeEnd: (newPosition) {
-                      controller.player.seek(newPosition);
-                    },
+                  Text(
+                    RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
+                            .firstMatch(controller.position.value)
+                            ?.group(1) ??
+                        controller.position.value,
+                    style: getRegularTextStyle(
+                        fontSize: ManagerFontSize.s14,
+                        color: ManagerColors.black),
+                  ),
+                  Expanded(
+                    child: Slider(
+                      thumbColor: ManagerColors.mainColor,
+                      value: controller.value.value,
+                      min: const Duration(seconds: 0).inSeconds.toDouble(),
+                      max: controller.max.value + 1,
+                      inactiveColor: ManagerColors.greyLight,
+                      activeColor: ManagerColors.mainColor,
+                      onChanged: (val) {
+                        controller.changeDurationToSeconds(val.toInt());
+                      },
+                    ),
+                  ),
+                  Text(
+                    RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
+                            .firstMatch(controller.duration.value)
+                            ?.group(1) ??
+                        controller.duration.value,
+                    style: getRegularTextStyle(
+                        fontSize: ManagerFontSize.s14,
+                        color: ManagerColors.black),
                   ),
                 ],
-              );
-            },
+              ),
+            ),
           ),
           SizedBox(
-            height: 15.h,
+            height: ManagerHeight.h10,
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25.w),
+            padding: EdgeInsets.symmetric(horizontal: ManagerWidth.w24),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 35.w,
-                  height: 35.h,
+                  width: ManagerWidth.w36,
+                  height: ManagerHeight.h36,
                   decoration: BoxDecoration(
                       color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10).r),
-                  child: IconButton(
-                    onPressed: () async {
-                      await controller.getPath(
-                          name:
-                              "${controller.name}-${controller.surah_name}.mp3");
-                    },
-                    icon: controller.isLoadingAudio
-                        ? CircularProgressIndicator(
-                            value: controller.progress,
-                            color: ColorCode.mainColor,
-                          )
-                        : const Icon(
-                            CupertinoIcons.down_arrow,
-                            color: Colors.black54,
-                            size: 20,
-                          ),
-                  ),
-                ),
-                const Spacer(),
-                Container(
-                  width: 35.w,
-                  height: 35.h,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10).r),
+                      borderRadius: BorderRadius.circular(ManagerRadius.r10)),
                   child: IconButton(
                     onPressed: () {
                       controller.skip();
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       CupertinoIcons.arrow_right_to_line,
                       color: Colors.black54,
-                      size: 20,
+                      size: ManagerIconSize.s20,
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: 15.w,
+                  width: ManagerWidth.w16,
                 ),
                 StreamBuilder<PlayerState>(
                   stream: controller.player.playerStateStream,
@@ -96,12 +94,13 @@ class PlayTool extends StatelessWidget {
                     if (processingState == ProcessingState.loading ||
                         processingState == ProcessingState.buffering) {
                       return Container(
-                        width: 35.w,
-                        height: 35.h,
+                        width: ManagerWidth.w36,
+                        height: ManagerHeight.h36,
                         margin: const EdgeInsets.all(8.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(10).r,
+                          borderRadius:
+                              BorderRadius.circular(ManagerRadius.r10),
                         ),
                         child: const CircularProgressIndicator(
                           color: ColorCode.mainColor,
@@ -109,106 +108,88 @@ class PlayTool extends StatelessWidget {
                       );
                     } else if (playing != true) {
                       return Container(
-                        width: 35.w,
-                        height: 35.h,
+                        width: ManagerWidth.w36,
+                        height: ManagerHeight.h36,
                         decoration: BoxDecoration(
                           color: playing ?? true
                               ? Colors.red
                               : ColorCode.mainColor,
-                          borderRadius: BorderRadius.circular(10).r,
+                          borderRadius:
+                              BorderRadius.circular(ManagerRadius.r10),
                         ),
                         child: IconButton(
                           onPressed: () async {
                             controller.player.play();
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             CupertinoIcons.play_fill,
                             color: Colors.white,
-                            size: 20,
+                            size: ManagerIconSize.s20,
                           ),
                         ),
                       );
                     } else if (processingState != ProcessingState.completed) {
                       return Container(
-                        width: 35.w,
-                        height: 35.h,
+                        width: ManagerWidth.w36,
+                        height: ManagerHeight.h36,
                         decoration: BoxDecoration(
                           color: playing! ? Colors.red : ColorCode.mainColor,
-                          borderRadius: BorderRadius.circular(10).r,
+                          borderRadius:
+                              BorderRadius.circular(ManagerRadius.r10),
                         ),
                         child: IconButton(
                           onPressed: () async {
                             controller.player.pause();
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             CupertinoIcons.pause_fill,
                             color: Colors.white,
-                            size: 20,
+                            size: ManagerIconSize.s20,
                           ),
                         ),
                       );
                     } else {
                       return Container(
-                        width: 35.w,
-                        height: 35.h,
+                        width: ManagerWidth.w36,
+                        height: ManagerHeight.h36,
                         decoration: BoxDecoration(
                           color: ColorCode.mainColor,
-                          borderRadius: BorderRadius.circular(10).r,
+                          borderRadius:
+                              BorderRadius.circular(ManagerRadius.r10),
                         ),
                         child: IconButton(
                           onPressed: () async {
                             controller.player.seek(Duration.zero,
-                            index: controller.player.effectiveIndices!.first);
+                                index:
+                                    controller.player.effectiveIndices!.first);
                           },
-                          icon: const Icon(
+                          icon: Icon(
                             CupertinoIcons.reply,
                             color: Colors.white,
-                            size: 20,
+                            size: ManagerIconSize.s20,
                           ),
                         ),
-                      ); 
+                      );
                     }
                   },
                 ),
                 SizedBox(
-                  width: 15.w,
+                  width: ManagerWidth.w16,
                 ),
                 Container(
-                  width: 35.w,
-                  height: 35.h,
+                  width: ManagerWidth.w36,
+                  height: ManagerHeight.h36,
                   decoration: BoxDecoration(
                       color: Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10).r),
+                      borderRadius: BorderRadius.circular(ManagerRadius.r10)),
                   child: IconButton(
                     onPressed: () {
                       controller.previous();
                     },
-                    icon: const Icon(
+                    icon: Icon(
                       CupertinoIcons.arrow_left_to_line,
                       color: Colors.black54,
-                      size: 20,
-                    ),
-                  ),
-                ),
-                const Spacer(),
-                Container(
-                  width: 35.w,
-                  height: 35.h,
-                  decoration: BoxDecoration(
-                      color: controller.isRepeatModeEnabled
-                          ? ColorCode.mainColor
-                          : Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(10).r),
-                  child: IconButton(
-                    onPressed: () {
-                      controller.releaseMode();
-                    },
-                    icon: Icon(
-                      CupertinoIcons.arrow_2_squarepath,
-                      color: controller.isRepeatModeEnabled
-                          ? Colors.white
-                          : Colors.black54,
-                      size: 20,
+                      size: ManagerIconSize.s20,
                     ),
                   ),
                 ),

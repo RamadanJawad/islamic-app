@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/constant/color.dart';
+import 'package:islamic_app/core/resources/color.dart';
+import 'package:islamic_app/core/resources/manager_assets.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_strings.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,57 +17,54 @@ class AboutWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+      padding: EdgeInsets.symmetric(
+          horizontal: ManagerWidth.w6, vertical: ManagerHeight.h6),
       decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(10).r,
-          border: Border.all(color: ColorCode.mainColor)),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(ManagerRadius.r10),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "عن التطبيق",
-            style: TextStyle(
-                fontFamily: "ibm",
-                fontSize: 19.sp,
-                fontWeight: FontWeight.w500),
+            ManagerStrings.about,
+            style: getBoldTextStyle(
+                fontSize: ManagerFontSize.s16, color: ManagerColors.black),
           ),
           const Divider(),
           InkWell(
             onTap: () {
               Get.defaultDialog(
-                title: "حول التطبيق",
-                titleStyle: const TextStyle(fontFamily: "ibm"),
-                middleTextStyle: const TextStyle(fontFamily: "ibm"),
+                title: ManagerStrings.about,
+                titleStyle: const TextStyle(fontFamily: "Noor"),
+                middleTextStyle: const TextStyle(fontFamily: "Noor"),
                 cancel: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         backgroundColor: ColorCode.mainColor),
                     onPressed: () {
                       Get.back();
                     },
-                    child: const Text("اغلاق",
-                        style: TextStyle(fontFamily: "ibm"))),
-                middleText:
-                    ".تطبيق شفيع المسلم , هو تطبيق اسلامي مجاني مئة بالمئة ,لا يحتاج منك ان تكون متصل بالانترنت , يقدم خدمات اسلامية متعددة مثل عرض جميع الاذكار اليومية التى تخص حياة المسلم مع امكانية تنبيهه باشعار لقراءة اذكار الصباح والمساء بالاضافة الى قراءة القراءن و عرض اوقات الصلاة وتحديد اتجاه القبلة وخانة المسبحة الالكترونية , والعديد من الخدمات الرائعة التى تنفع المسلم في دينيه ودنياه , نسأل الله ان يكون هذا العمل شفيعا لنا يوم القيامة وان يتقبل منكم",
+                    child: const Text(ManagerStrings.close,
+                        style: TextStyle(fontFamily: "Noor"))),
+                middleText: ManagerStrings.aboutApp,
               );
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset(
-                  "assets/images/information.png",
-                  width: 25.w,
-                  height: 25.h,
+                  ManagerAssets.information,
+                  width: ManagerWidth.w24,
+                  height: ManagerHeight.h24,
                 ),
                 SizedBox(
-                  width: 5.w,
+                  width: ManagerWidth.w4,
                 ),
                 Text(
                   "حول التطبيق",
-                  style: TextStyle(
-                      fontFamily: "ibm",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
+                  style: getRegularTextStyle(
+                      fontSize: ManagerFontSize.s16,
+                      color: ManagerColors.black),
                 ),
                 const Spacer(),
                 const Icon(
@@ -74,25 +77,25 @@ class AboutWidget extends StatelessWidget {
           const Divider(),
           InkWell(
             onTap: () {
-              Share.share("تطبيق شفيع المسلم");
+              Share.share(
+                  "تطبيق أذكار المسلم \n https://play.google.com/store/apps/details?id=com.azker96.azker1196");
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Image.asset(
-                  "assets/images/share.png",
-                  width: 23.w,
-                  height: 23.h,
+                  ManagerAssets.share,
+                  width: ManagerWidth.w22,
+                  height: ManagerHeight.h22,
                 ),
                 SizedBox(
-                  width: 5.w,
+                  width: ManagerWidth.w4,
                 ),
                 Text(
-                  "نشر التطبيق",
-                  style: TextStyle(
-                      fontFamily: "ibm",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
+                  ManagerStrings.shareApp,
+                  style: getRegularTextStyle(
+                      fontSize: ManagerFontSize.s16,
+                      color: ManagerColors.black),
                 ),
                 const Spacer(),
                 const Icon(
@@ -112,19 +115,18 @@ class AboutWidget extends StatelessWidget {
             child: Row(
               children: [
                 Image.asset(
-                  "assets/images/technical_support.png",
-                  width: 23.w,
-                  height: 23.h,
+                  ManagerAssets.technicalSupport,
+                  width: ManagerWidth.w22,
+                  height: ManagerHeight.h22,
                 ),
                 SizedBox(
-                  width: 5.w,
+                  width: ManagerWidth.w4,
                 ),
                 Text(
-                  "الدعم الفني",
-                  style: TextStyle(
-                      fontFamily: "ibm",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
+                  ManagerStrings.support,
+                  style: getRegularTextStyle(
+                      fontSize: ManagerFontSize.s16,
+                      color: ManagerColors.black),
                 ),
                 const Spacer(),
                 const Icon(
@@ -145,19 +147,18 @@ class AboutWidget extends StatelessWidget {
             child: Row(
               children: [
                 Image.asset(
-                  "assets/images/social_media.png",
-                  width: 23.w,
-                  height: 23.h,
+                  ManagerAssets.socialMedia,
+                  width: ManagerWidth.w22,
+                  height: ManagerHeight.h22,
                 ),
                 SizedBox(
-                  width: 5.w,
+                  width: ManagerWidth.w6,
                 ),
                 Text(
                   "للاستفسار والتواصل",
-                  style: TextStyle(
-                      fontFamily: "ibm",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
+                  style: getRegularTextStyle(
+                      fontSize: ManagerFontSize.s16,
+                      color: ManagerColors.black),
                 ),
                 const Spacer(),
                 const Icon(
@@ -168,7 +169,7 @@ class AboutWidget extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 5.w,
+            height: ManagerHeight.h6,
           )
         ],
       ),

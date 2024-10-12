@@ -5,7 +5,6 @@ import 'package:islamic_app/features/pray_time/controller/prayTime_controller.da
 
 class CheckNotifications {
   PrayTimeController prayTimeController = Get.put(PrayTimeController());
-  NotificationManager notificationManager = NotificationManager();
   prayTimeNotification() {
     NotificationManager.displayPrayTimeNotification(
         id: 1,

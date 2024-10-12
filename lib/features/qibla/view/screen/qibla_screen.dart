@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/qibla/controller/qibla_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
+import 'package:islamic_app/core/resources/color.dart';
 import 'package:islamic_app/features/qibla/view/widget/qibla_compos.dart';
 
 class QiblaScreen extends StatelessWidget {
@@ -11,16 +14,19 @@ class QiblaScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    QiblaController controller = Get.put(QiblaController());
+    Get.put(QiblaController());
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
+        backgroundColor: ManagerColors.backgroundColor,
         appBar: AppBar(
+          centerTitle: true,
           title: Text(
             "اتجاه القبلة",
-            style: TextStyle(fontFamily: "ibm", fontSize: 22.sp),
+            style: getRegularTextStyle(
+                fontSize: ManagerFontSize.s22, color: ManagerColors.black),
           ),
-          backgroundColor: ColorCode.mainColor,
+          backgroundColor: ManagerColors.backgroundColor,
         ),
         body: FutureBuilder(
           future: FlutterQiblah.androidDeviceSensorSupport(),

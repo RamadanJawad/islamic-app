@@ -4,8 +4,11 @@ import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/qibla/controller/qibla_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
+import 'package:islamic_app/core/resources/color.dart';
 import 'package:islamic_app/features/qibla/view/widget/location_error_widget.dart';
 
 class QiblaCompass extends StatelessWidget {
@@ -63,36 +66,49 @@ class QiblahCompassWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FlutterQiblah.qiblahStream,
-      builder: (_, AsyncSnapshot<QiblahDirection> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CupertinoActivityIndicator());
-        }
-        final qiblahDirection = snapshot.data!;
-        var angle = ((qiblahDirection.qiblah) * (pi / 180) * -1);
-        return Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            Transform.rotate(
-              angle: angle,
-              child: SvgPicture.asset('assets/svg/5.svg', // compass
-                  color: ColorCode.mainColor),
-            ),
-            _kaabaSvg,
-            SvgPicture.asset('assets/svg/3.svg', //needle
-                color: ColorCode.mainColor),
-            const Align(
-              alignment: Alignment.bottomCenter,
-              child: Text(
-                "قم بمطابقة رأس السهمين \n من خلال تحريك الهاتف يمينا او شمالا",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontFamily: "ibm"),
-              ),
-            )
-          ],
-        );
-      },
-    );
+    return GetBuilder<QiblaController>(builder: (controller) {
+      return StreamBuilder(
+        stream: FlutterQiblah.qiblahStream,
+        builder: (_, AsyncSnapshot<QiblahDirection> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CupertinoActivityIndicator());
+          }
+          final qiblahDirection = snapshot.data!;
+          controller.animation = Tween(
+                  begin: controller.begin,
+                  end: (qiblahDirection.qiblah * (pi / 180) * -1))
+              .animate(controller.animationController!);
+          controller.begin = (qiblahDirection.qiblah * (pi / 180) * -1);
+          controller.animationController!.forward(from: 0);
+          return AnimatedBuilder(
+              animation: controller.animation!,
+              builder: (context, child) {
+                return Stack(
+                  alignment: Alignment.center,
+                  children: <Widget>[
+                    Transform.rotate(
+                      angle: controller.animation!.value,
+                      child: SvgPicture.asset('assets/svg/5.svg', // compass
+                          color: ColorCode.mainColor),
+                    ),
+                    _kaabaSvg,
+                    SvgPicture.asset('assets/svg/3.svg', //needle
+                        color: ColorCode.mainColor),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        "قم بمطابقة رأس السهمين \n من خلال تحريك الهاتف يمينا او شمالا",
+                        textAlign: TextAlign.center,
+                        style: getRegularTextStyle(
+                            fontSize: ManagerFontSize.s15,
+                            color: ManagerColors.black),
+                      ),
+                    )
+                  ],
+                );
+              });
+        },
+      );
+    });
   }
 }

@@ -8,7 +8,7 @@ import Foundation
 import audio_service
 import audio_session
 import awesome_notifications
-import device_info_plus_macos
+import device_info_plus
 import geolocator_apple
 import just_audio
 import path_provider_foundation

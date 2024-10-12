@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:islamic_app/core/resources/manager_assets.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_strings.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/splash/controller/splash_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
-import 'package:islamic_app/core/constant/image_url.dart';
 
 class BodySplash extends StatelessWidget {
   const BodySplash({super.key});
@@ -20,26 +24,24 @@ class BodySplash extends StatelessWidget {
               child: Column(
                 children: [
                   Image.asset(
-                    ImageUrl.logo,
-                    width: 200.w,
-                    height: 200.h,
+                    ManagerAssets.logo,
+                    width: ManagerWidth.w205,
+                    height: ManagerHeight.h200,
                   ),
                   RichText(
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: "شفيع",
-                          style: TextStyle(
-                              fontSize: 25.sp,
-                              fontFamily: "ibm",
-                              color: ColorCode.secondaryColor),
+                          text: ManagerStrings.subAppName1,
+                          style: getBoldTextStyle(
+                              fontSize: ManagerFontSize.s24,
+                              color: ManagerColors.secondaryColor),
                         ),
                         TextSpan(
-                          text: " المسلم",
-                          style: TextStyle(
-                              fontSize: 25.sp,
-                              fontFamily: "ibm",
-                              color: ColorCode.mainColor),
+                          text: ManagerStrings.subAppName2,
+                          style: getBoldTextStyle(
+                              fontSize: ManagerFontSize.s24,
+                              color: ManagerColors.mainColor),
                         )
                       ],
                     ),
@@ -49,8 +51,8 @@ class BodySplash extends StatelessWidget {
             ),
             const Spacer(),
             Image.asset(
-              ImageUrl.mosque,
-              color: ColorCode.mainColor,
+              ManagerAssets.mosque,
+              color: ManagerColors.mainColor,
             ),
           ],
         );

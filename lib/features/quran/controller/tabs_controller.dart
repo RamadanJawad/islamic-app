@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/data/data.dart';
+import 'package:islamic_app/core/data/data.dart';
 import 'package:islamic_app/features/quran/model/quran.dart';
 import 'package:islamic_app/features/quran/model/tafseer.dart';
 import 'package:pdfx/pdfx.dart';

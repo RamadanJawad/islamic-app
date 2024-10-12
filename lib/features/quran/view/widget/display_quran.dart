@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/constant/color.dart';
+import 'package:islamic_app/core/resources/color.dart';
 import 'package:pdfx/pdfx.dart';
 import 'package:islamic_app/features/quran/controller/quran_controller.dart';
 

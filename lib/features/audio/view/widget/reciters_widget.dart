@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/core/constant/color.dart';
-import 'package:islamic_app/data/data.dart';
+import 'package:islamic_app/core/resources/color.dart';
+import 'package:islamic_app/core/data/data.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/audio/controller/audio_controller.dart';
 
 class RecitersWidget extends StatelessWidget {
@@ -10,58 +12,61 @@ class RecitersWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AudioController>(builder: (controller) {
-      return SizedBox(
-        height: 120.h,
-        child: ListView.builder(
-            itemCount: Data.reciters.length,
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () {
-                  controller.changeIndex(index);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  width: 75.w,
-                  height: 120.h,
-                  decoration: BoxDecoration(
-                      color: controller.selectItem == index
-                          ? ColorCode.mainColor
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(15).r),
-                  child: Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(10).r,
-                        child: Image.asset(
-                          Data.reciters[index]['image'],
-                          width: 50.w,
-                          fit: BoxFit.cover,
-                          height: 50.h,
+    return GetBuilder<AudioController>(
+      builder: (controller) {
+        return SizedBox(
+          height: ManagerHeight.h120,
+          child: ListView.builder(
+              itemCount: Data.reciters.length,
+              padding: EdgeInsets.symmetric(horizontal: ManagerWidth.w4),
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    controller.changeIndex(index);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    margin: EdgeInsets.symmetric(horizontal: ManagerWidth.w4),
+                    width: ManagerWidth.w76,
+                    height: ManagerHeight.h120,
+                    decoration: BoxDecoration(
+                        color: controller.selectItem == index
+                            ? ColorCode.mainColor
+                            : Colors.white,
+                        borderRadius: BorderRadius.circular(ManagerRadius.r16)),
+                    child: Column(
+                      children: [
+                        ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(ManagerRadius.r16),
+                          child: Image.asset(
+                            Data.reciters[index]['image'],
+                            width: ManagerWidth.w50,
+                            fit: BoxFit.cover,
+                            height: ManagerHeight.h50,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Text(
-                        Data.reciters[index]['name'],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontFamily: "ibm",
-                            fontSize: 13.5.sp,
-                            color: controller.selectItem == index
-                                ? Colors.white
-                                : Colors.black),
-                      )
-                    ],
+                        SizedBox(
+                          height: ManagerHeight.h4,
+                        ),
+                        Text(
+                          Data.reciters[index]['name'],
+                          textAlign: TextAlign.center,
+                          textScaler: TextScaler.noScaling,
+                          style: getRegularTextStyle(
+                              fontSize: ManagerFontSize.s12,
+                              color: controller.selectItem == index
+                                  ? Colors.white
+                                  : Colors.black),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }),
-      );
-    });
+                );
+              }),
+        );
+      },
+    );
   }
 }

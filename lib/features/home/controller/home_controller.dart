@@ -1,20 +1,55 @@
-import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:islamic_app/data/data.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:hijri/hijri_calendar.dart';
+import 'package:islamic_app/core/data/data.dart';
 import 'package:islamic_app/features/audio/controller/audio_controller.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class HomeController extends GetxController {
-  AudioController audioController = AudioController();
-  late Timer _timer;
+  AudioController audioController = Get.put(AudioController());
   late bool serviceEnable;
-  late PageController pageController;
   late var dua;
-  int currentPage = 0;
+  late Map<String, String> data;
+  String? hijri;
+  var counter = 0.obs;
+  late BannerAd bannerAd;
+  late InterstitialAd interstitialAd;
+  bool isBannerAd = false;
+  bool isInterstitialAd = false;
 
-  String ayha(index) {
-    return Data.ayah[index]['text1'];
+  initBannerAd() {
+    bannerAd = BannerAd(
+      size: AdSize.fullBanner,
+      adUnitId: "ca-app-pub-8189351478187072/7716406550",
+      request: const AdRequest(),
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          print("Ad loaded !");
+          isBannerAd = true;
+          update();
+        },
+        onAdFailedToLoad: (ad, error) {
+          isBannerAd = false;
+          bannerAd.load();
+          print('BannerAd failed to load: $error');
+          ad.dispose();
+          update();
+        },
+      ),
+    );
+    bannerAd.load();
+  }
+
+  changeCounter() {
+    counter.value = counter.value + 1;
+  }
+
+  showDate() {
+    var today = HijriCalendar.now();
+    hijri = today.fullDate();
+  }
+
+  void ayha() {
+    data = (Data.ayah..shuffle()).first;
   }
 
   readData() async {
@@ -26,37 +61,57 @@ class HomeController extends GetxController {
     return Data.ayah[index]['text2'];
   }
 
-  String share(index) {
-    String data = "${ayha(index)}\n${tafseer(index)}";
-    return data;
+  initInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: "ca-app-pub-8189351478187072/1549635211",
+      request: const AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          interstitialAd = ad;
+          isInterstitialAd = true;
+          update();
+        },
+        onAdFailedToLoad: (error) {
+          print('InterstitialAd failed to load: $error');
+          isInterstitialAd = false;
+        },
+      ),
+    );
   }
 
-  void onPageChange(int index) {
-    currentPage = index;
-    update();
+  showInterstitialAd() {
+    if (isInterstitialAd) {
+      interstitialAd.show();
+      interstitialAd.fullScreenContentCallback = FullScreenContentCallback(
+        onAdShowedFullScreenContent: (ad) {
+          ad.dispose();
+          isInterstitialAd = false;
+          update();
+        },
+        onAdFailedToShowFullScreenContent: (ad, error) {
+          ad.dispose();
+          isInterstitialAd = false;
+        },
+      );
+    }
   }
-
-  
 
   @override
   void onInit() {
     readData();
+    initInterstitialAd();
+    initBannerAd();
     super.onInit();
-    pageController = PageController();
-    _timer = Timer.periodic(
-      const Duration(seconds: 5),
-      (Timer timer) {
-        if (currentPage < 11) {
-          currentPage++;
-        } else {
-          currentPage = 0;
-        }
-        pageController.animateToPage(
-          currentPage,
-          duration: const Duration(milliseconds: 350),
-          curve: Curves.easeIn,
-        );
-      },
-    );
+    ayha();
+    showDate();
+  }
+
+  @override
+  void dispose() {
+    bannerAd.dispose();
+    if (isBannerAd) {
+      interstitialAd.dispose();
+    }
+    super.dispose();
   }
 }

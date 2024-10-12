@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.islamic_app">
+    package="com.azker96.azker1196">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -9,7 +10,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
    <application
-        android:label="شفيع المسلم"
+        android:label="أذكار المسلم"
         android:usesCleartextTraffic="true"
         android:name="${applicationName}"
         android:icon="@drawable/logo_app">
@@ -17,6 +18,7 @@
             android:name="com.ryanheise.audioservice.AudioServiceActivity"
             android:exported="true"
             android:showWhenLocked="true"
+            android:enableOnBackInvokedCallback="true"
             android:turnScreenOn="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -26,13 +28,15 @@
             
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
-              />
+              android:resource="@style/NormalTheme"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <meta-data
+              android:name="com.google.android.gms.ads.APPLICATION_ID"
+              android:value="ca-app-pub-8189351478187072~8982458018"/>
         <service
             android:name="com.ryanheise.audioservice.AudioService"
             android:foregroundServiceType="mediaPlayback"

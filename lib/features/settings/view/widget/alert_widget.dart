@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:islamic_app/core/resources/manager_assets.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_strings.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/settings/controller/setting_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
-import 'package:islamic_app/core/constant/image_url.dart';
 import 'package:islamic_app/core/shared/shared_perf.dart';
 import 'package:islamic_app/features/settings/view/widget/switch_button.dart';
 
@@ -14,38 +17,36 @@ class AlertWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<SettingController>(builder: (controller) {
       return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        padding: EdgeInsets.symmetric(
+            horizontal: ManagerWidth.w4, vertical: ManagerHeight.h4),
         decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(10).r,
-            border: Border.all(color: ColorCode.mainColor)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(ManagerRadius.r10),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "التنبيهات",
-              style: TextStyle(
-                  fontFamily: "ibm",
-                  fontSize: 19.sp,
-                  fontWeight: FontWeight.w500),
+              ManagerStrings.alert,
+              style: getBoldTextStyle(
+                  fontSize: ManagerFontSize.s16, color: ManagerColors.black),
             ),
             const Divider(),
             Row(
               children: [
                 Image.asset(
-                  ImageUrl.notification1,
-                  width: 25.w,
-                  height: 25.h,
+                  ManagerAssets.notification1,
+                  width: ManagerWidth.w24,
+                  height: ManagerHeight.h24,
                 ),
                 SizedBox(
-                  width: 5.w,
+                  width: ManagerWidth.w4,
                 ),
                 Text(
-                  "تنبيهات الصلاة",
-                  style: TextStyle(
-                      fontFamily: "ibm",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
+                  ManagerStrings.alertPrayer,
+                  style: getRegularTextStyle(
+                      fontSize: ManagerFontSize.s16,
+                      color: ManagerColors.black),
                 ),
                 const Spacer(),
                 SwitchButton(
@@ -62,19 +63,18 @@ class AlertWidget extends StatelessWidget {
             Row(
               children: [
                 Image.asset(
-                  ImageUrl.notification2,
-                  width: 25.w,
-                  height: 25.h,
+                  ManagerAssets.notification2,
+                  width: ManagerWidth.w24,
+                  height: ManagerHeight.h24,
                 ),
                 SizedBox(
-                  width: 5.w,
+                  width: ManagerWidth.w4,
                 ),
                 Text(
-                  "تنبيهات أذكار الصباح",
-                  style: TextStyle(
-                      fontFamily: "ibm",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
+                  ManagerStrings.alertMorning,
+                  style: getRegularTextStyle(
+                      fontSize: ManagerFontSize.s16,
+                      color: ManagerColors.black),
                 ),
                 const Spacer(),
                 SwitchButton(
@@ -91,19 +91,18 @@ class AlertWidget extends StatelessWidget {
             Row(
               children: [
                 Image.asset(
-                  ImageUrl.notification3,
-                  width: 25.w,
-                  height: 25.h,
+                  ManagerAssets.notification3,
+                  width: ManagerWidth.w24,
+                  height: ManagerHeight.h24,
                 ),
                 SizedBox(
-                  width: 5.w,
+                  width: ManagerWidth.w4,
                 ),
                 Text(
-                  "تنبيهات أذكار المساء",
-                  style: TextStyle(
-                      fontFamily: "ibm",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
+                  ManagerStrings.alertEvening,
+                  style: getRegularTextStyle(
+                      fontSize: ManagerFontSize.s16,
+                      color: ManagerColors.black),
                 ),
                 const Spacer(),
                 SwitchButton(
@@ -120,19 +119,18 @@ class AlertWidget extends StatelessWidget {
             Row(
               children: [
                 Image.asset(
-                  ImageUrl.notification4,
-                  width: 25.w,
-                  height: 25.h,
+                  ManagerAssets.notification4,
+                  width: ManagerWidth.w24,
+                  height: ManagerHeight.h24,
                 ),
                 SizedBox(
-                  width: 5.w,
+                  width: ManagerWidth.w4,
                 ),
                 Text(
-                  "تنبيهات يوم الجمعة",
-                  style: TextStyle(
-                      fontFamily: "ibm",
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500),
+                  ManagerStrings.alertFriday,
+                  style: getRegularTextStyle(
+                      fontSize: ManagerFontSize.s16,
+                      color: ManagerColors.black),
                 ),
                 const Spacer(),
                 SwitchButton(
@@ -146,7 +144,7 @@ class AlertWidget extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 5.h,
+              height: ManagerHeight.h4,
             )
           ],
         ),

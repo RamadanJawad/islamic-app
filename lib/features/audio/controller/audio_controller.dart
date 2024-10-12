@@ -1,30 +1,29 @@
-import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:dio/dio.dart';
-import 'package:islamic_app/features/audio/view/widget/common.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:islamic_app/core/functions/awesome_dialog.dart';
 import 'package:islamic_app/core/functions/check_internet.dart';
-import 'package:islamic_app/core/functions/snackbar.dart';
-import 'package:islamic_app/data/data.dart';
-import 'package:rxdart/rxdart.dart' as rx;
+import 'package:islamic_app/core/data/data.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 
 class AudioController extends GetxController {
   bool isPlaying = false;
-  late AudioPlayer player;
+  AudioPlayer player = AudioPlayer();
+  var duration = ''.obs;
+  var position = ''.obs;
+  var max = 0.0.obs;
+  var value = 0.0.obs;
   BuildContext? context = Get.context!;
   bool isFound = false;
   bool isRepeatModeEnabled = false;
   bool isLoadingAudio = false;
-  Dio dio = Dio();
   String? path_2;
   double progress = 0.0;
   int selectItem = 0;
   String name = "مشاري العفاسي";
   String id = "001";
+  int seconds = 0;
   String image = "assets/images/masari.jpg";
   String surah_name = "سورة الفاتحة";
   String url = "https://server8.mp3quran.net/afs/";
@@ -42,17 +41,6 @@ class AudioController extends GetxController {
     update();
   }
 
-  releaseMode() {
-    isRepeatModeEnabled = !isRepeatModeEnabled;
-    update();
-    if (isRepeatModeEnabled) {
-      player.setLoopMode(LoopMode.one);
-    } else {
-      player.setLoopMode(LoopMode.off);
-    }
-    update();
-  }
-
   skip() {
     if (Data.surah_number[stepCounter] != "114") {
       stepCounter++;
@@ -61,13 +49,6 @@ class AudioController extends GetxController {
       player.setAudioSource(
         AudioSource.uri(
           Uri.parse("$url$id.mp3"),
-          tag: MediaItem(
-            id: '1',
-            album: name,
-            title: surah_name,
-            artUri: Uri.parse(
-                "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"),
-          ),
         ),
       );
       update();
@@ -82,13 +63,6 @@ class AudioController extends GetxController {
       player.setAudioSource(
         AudioSource.uri(
           Uri.parse("$url$id.mp3"),
-          tag: MediaItem(
-            id: '1',
-            album: name,
-            title: surah_name,
-            artUri: Uri.parse(
-                "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"),
-          ),
         ),
       );
       update();
@@ -100,81 +74,37 @@ class AudioController extends GetxController {
     surah_url = "$url${Data.surah_number[index]}.mp3";
     id = Data.surah_number[index];
     marge = "$name-$surah_name.mp3";
-    init();
+    playSong();
     update();
   }
 
-  Future<void> startDownloading(String fileName) async {
-    isLoadingAudio = true;
-    update();
-    showSnackBar(context!, "جاري تحميل السورة ...", Colors.grey);
-    final response = await dio.download(
-      surah_url.toString(),
-      "$path_2/$fileName",
-      onReceiveProgress: (recivedBytes, totalBytes) {
-        progress = recivedBytes / totalBytes;
-        update();
-      },
-    );
-    if (response.statusCode == 200) {
-      isLoadingAudio = false;
-      isFound = true;
-      progress = 0.0;
+  check() async {
+    status = await checkInternet();
+    if (status) {
+      player.play();
       update();
-      showSnackBar(context!, "تم تحميل السورة بنجاح ", Colors.green[400]!);
     } else {
-      showSnackBar(
-          context!, "فشل التحميل , يرجى المحاولة مرى اخرى", Colors.red[400]!);
+      showAwesomeDialog(
+          context: context,
+          description: "تحقق من الاتصال بالانترنت !",
+          dialogType: DialogType.info,
+          btnOkOnPress: () => Get.delete());
+      update();
     }
-  }
-
-  Future<void> initPatForm() async {
-    Future.delayed(const Duration(seconds: 1), _setPath);
-  }
-
-  void _setPath() async {
-    final savedDir = Directory("/storage/emulated/0/download");
-    bool hasExisted = await savedDir.exists();
-    if (!hasExisted) {
-      savedDir.create();
-    }
-    path_2 = savedDir.path;
+    update();
   }
 
   checkPlaying() async {
     status = await checkInternet();
-    String filePath = "/storage/emulated/0/download/$marge";
-    isFound = await File(filePath).exists();
     if (status) {
-      if (isFound) {
-        await playAudioFromDevice();
-      } else {
-        await playAudioFromUrl();
-      }
+      await playAudioFromUrl();
     } else {
-      if (isFound) {
-        await playAudioFromDevice();
-      } else {
-        showAwesomeDialog(
-            context: context,
-            description: "تحقق من الاتصال بالانترنت !",
-            dialogType: DialogType.info,
-            btnOkOnPress: () => Get.delete());
-      }
+      showAwesomeDialog(
+          context: context,
+          description: "تحقق من الاتصال بالانترنت !",
+          dialogType: DialogType.info,
+          btnOkOnPress: () => Get.delete());
     }
-  }
-
-  playAudioFromDevice() {
-    if (isPlaying) {
-      player.pause();
-      isPlaying = false;
-      update();
-    } else {
-      player.play();
-      isPlaying = true;
-      update();
-    }
-    update();
   }
 
   playAudioFromUrl() async {
@@ -190,77 +120,41 @@ class AudioController extends GetxController {
     update();
   }
 
-  Stream<PositionData> get positionDataStream =>
-      rx.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-          player.positionStream,
-          player.bufferedPositionStream,
-          player.durationStream,
-          (position, bufferedPosition, duration) => PositionData(
-              position, bufferedPosition, duration ?? Duration.zero));
+  updatePosition() {
+    player.durationStream.listen((d) {
+      duration.value = d.toString();
+      max.value = d!.inSeconds.toDouble();
+    });
+    player.positionStream.listen((p) {
+      position.value = p.toString();
+      value.value = p.inSeconds.toDouble();
+    });
+  }
 
-  init() async {
-    String filePath = "/storage/emulated/0/download/$marge";
-    isFound = await File(filePath).exists();
-    if (isFound) {
-      await player.setAudioSource(
-        AudioSource.file(
-          "/storage/emulated/0/download/$marge",
-          tag: MediaItem(
-            id: '1',
-            album: name,
-            title: surah_name,
-            artUri: Uri.parse(
-                "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"),
-          ),
-        ),
-      );
-    } else {
+  changeDurationToSeconds(second) {
+    seconds = second;
+    var duration = Duration(seconds: second);
+    player.seek(duration);
+  }
+
+  Future<void> playSong() async {
+    try {
       await player.setAudioSource(
         AudioSource.uri(
           Uri.parse(surah_url),
           tag: MediaItem(
-            id: '1',
-            album: name,
-            title: surah_name,
-            artUri: Uri.parse(
-                "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80"),
-          ),
+              id: "1",
+              title: surah_name,
+              album: name,
+              playable: true,
+              artUri: Uri.parse(
+                  "https://images.unsplash.com/photo-1542816417-0983c9c9ad53?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80")),
         ),
       );
+      player.play();
+      updatePosition();
+    } on Exception catch (e) {
+      print(e.toString());
     }
-  }
-
-  getPath({String? name}) async {
-    String filePath = "/storage/emulated/0/download/$name";
-    isFound = await File(filePath).exists();
-    status = await checkInternet();
-    if (isFound) {
-      showAwesomeDialog(
-          context: context!,
-          description: "لقد قمت بتحميل السورة من قبل ",
-          dialogType: DialogType.info,
-          btnOkOnPress: () => Get.delete());
-      update();
-    } else {
-      if (status) {
-        startDownloading(name!);
-        update();
-      } else {
-        showAwesomeDialog(
-            context: context,
-            description: "تحقق من الاتصال بالانترنت !",
-            dialogType: DialogType.info,
-            btnOkOnPress: () => Get.delete());
-      }
-    }
-    update();
-  }
-
-  @override
-  void onInit() {
-    player = AudioPlayer();
-    super.onInit();
-    initPatForm();
-    init();
   }
 }

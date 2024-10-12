@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
+import 'package:islamic_app/core/resources/manager_assets.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/athkar/controller/athkar_controller.dart';
-import 'package:islamic_app/core/constant/image_url.dart';
-import 'package:islamic_app/data/data.dart';
+import 'package:islamic_app/core/data/data.dart';
 
 class BodyAthkar extends StatelessWidget {
   const BodyAthkar({super.key});
@@ -32,43 +36,44 @@ class BodyAthkar extends StatelessWidget {
                         onTap: () {
                           controller.onClickItem(index);
                         },
-                        child: SizedBox(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.circular(ManagerRadius.r10),
+                              color: Colors.white),
                           width: double.infinity,
-                          height: 70.h,
-                          child: Card(
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10).r),
-                            child: IntrinsicHeight(
-                              child: Row(
-                                children: [
-                                  Image.asset(
-                                    ImageUrl.icon,
-                                    width: 45.w,
-                                    height: 45.h,
-                                  ),
-                                  VerticalDivider(
-                                    color: Colors.black,
-                                    indent: 6.w,
-                                    endIndent: 6.w,
-                                  ),
-                                  Text(
-                                    "${Data.duaa[index]}",
-                                    style: TextStyle(
-                                        fontFamily: "ibm", fontSize: 19.sp),
-                                  ),
-                                  const Spacer(),
-                                  IconButton(
-                                      onPressed: () {
-                                        controller.onClickItem(index);
-                                      },
-                                      icon: const Icon(
-                                        Icons.arrow_back_ios_new,
-                                        color: Colors.grey,
-                                        size: 20,
-                                      ))
-                                ],
-                              ),
+                          height: ManagerHeight.h70,
+                          child: IntrinsicHeight(
+                            child: Row(
+                              children: [
+                                Image.asset(
+                                  ManagerAssets.icon,
+                                  width: ManagerWidth.w44,
+                                  height: ManagerHeight.h44,
+                                ),
+                                VerticalDivider(
+                                  color: Colors.black,
+                                  indent: 6.w,
+                                  endIndent: 6.w,
+                                ),
+                                Text(
+                                  "${Data.duaa[index]}",
+                                  style: getRegularTextStyle(
+                                      fontSize: ManagerFontSize.s18,
+                                      color: ManagerColors.black),
+                                ),
+                                const Spacer(),
+                                IconButton(
+                                    onPressed: () {
+                                      controller.onClickItem(index);
+                                    },
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Colors.grey,
+                                      size: ManagerIconSize.s20,
+                                    ))
+                              ],
                             ),
                           ),
                         ),

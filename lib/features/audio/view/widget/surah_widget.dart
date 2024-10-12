@@ -1,12 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:islamic_app/core/resources/color.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 
 class SurahWidget extends StatelessWidget {
   final int index;
   final void Function()? onTap;
   final String text;
-  const SurahWidget({super.key, required this.index, this.onTap, required this.text});
+  const SurahWidget(
+      {super.key, required this.index, this.onTap, required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +20,10 @@ class SurahWidget extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(10),
-        margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+        margin: EdgeInsets.symmetric(
+            horizontal: ManagerWidth.w10, vertical: ManagerHeight.h4),
         width: double.infinity,
-        height: 60.h,
+        height: ManagerHeight.h60,
         decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -26,31 +33,31 @@ class SurahWidget extends StatelessWidget {
                   blurRadius: 10,
                   spreadRadius: 1),
             ],
-            borderRadius: BorderRadius.circular(15).r),
+            borderRadius: BorderRadius.circular(ManagerRadius.r10)),
         child: Row(
           children: [
             Container(
-              width: 35.w,
-              height: 35.h,
+              width: ManagerWidth.w36,
+              height: ManagerHeight.h36,
               decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(10).r),
+                  color: const Color(0xffF1EEE5),
+                  borderRadius: BorderRadius.circular(ManagerRadius.r10)),
               child: IconButton(
                 onPressed: () {},
-                icon: const Icon(
+                icon: Icon(
                   CupertinoIcons.play_fill,
-                  color: Colors.white,
-                  size: 20,
+                  color: ColorCode.mainColor,
+                  size: ManagerIconSize.s20,
                 ),
               ),
             ),
             SizedBox(
-              width: 20.w,
+              width: ManagerWidth.w20,
             ),
             Text(
               text,
-              style: TextStyle(
-                  fontFamily: "ibm", fontSize: 17.sp, color: Colors.black),
+              style: getRegularTextStyle(
+                  fontSize: ManagerFontSize.s16, color: ManagerColors.black),
             ),
             const Spacer(),
           ],

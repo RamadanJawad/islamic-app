@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:islamic_app/core/resources/manager_colors.dart';
+import 'package:islamic_app/core/resources/manager_fonts.dart';
+import 'package:islamic_app/core/resources/manager_sizes.dart';
+import 'package:islamic_app/core/resources/manager_strings.dart';
+import 'package:islamic_app/core/resources/manager_styles.dart';
 import 'package:islamic_app/features/subha/controller/tasabih_controller.dart';
-import 'package:islamic_app/core/constant/color.dart';
 
 class NumberHead extends StatelessWidget {
   const NumberHead({super.key});
@@ -18,47 +21,49 @@ class NumberHead extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    "الدور",
-                    style: TextStyle(fontSize: 20.sp, fontFamily: "ibm"),
+                    ManagerStrings.role,
+                    style: getRegularTextStyle(
+                        fontSize: ManagerFontSize.s20,
+                        color: ManagerColors.black),
                   ),
                   Container(
                     alignment: Alignment.center,
-                    width: 80.w,
-                    height: 40.h,
+                    width: ManagerWidth.w80,
+                    height: ManagerHeight.h40,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10).r,
-                        border:
-                            Border.all(width: 1.w, color: ColorCode.mainColor)),
-                    child: Text(
-                      "${controller.role}",
-                      style: TextStyle(
-                          fontFamily: "ibm",
-                          fontSize: 25.sp,
-                          color: ColorCode.secondaryColor),
-                    ),
+                        borderRadius: BorderRadius.circular(ManagerRadius.r10),
+                        border: Border.all(
+                            width: ManagerWidth.w1,
+                            color: ManagerColors.mainColor)),
+                    child: Text("${controller.role}",
+                        style: getRegularTextStyle(
+                            fontSize: ManagerFontSize.s24,
+                            color: ManagerColors.secondaryColor)),
                   ),
                 ],
               ),
               Column(
                 children: [
                   Text(
-                    "الاجمالي",
-                    style: TextStyle(fontSize: 20.sp, fontFamily: "ibm"),
+                    ManagerStrings.total,
+                    style: getRegularTextStyle(
+                        fontSize: ManagerFontSize.s20,
+                        color: ManagerColors.black),
                   ),
                   Container(
                     alignment: Alignment.center,
-                    width: 80.w,
-                    height: 40.h,
+                    width: ManagerWidth.w80,
+                    height: ManagerHeight.h40,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10).r,
-                        border:
-                            Border.all(width: 1.w, color: ColorCode.mainColor)),
+                        borderRadius: BorderRadius.circular(ManagerRadius.r10),
+                        border: Border.all(
+                            width: ManagerWidth.w1,
+                            color: ManagerColors.mainColor)),
                     child: Text(
                       "${controller.value}",
-                      style: TextStyle(
-                          fontFamily: "ibm",
-                          fontSize: 25.sp,
-                          color: ColorCode.secondaryColor),
+                      style: getRegularTextStyle(
+                          fontSize: ManagerFontSize.s24,
+                          color: ManagerColors.secondaryColor),
                     ),
                   ),
                 ],
